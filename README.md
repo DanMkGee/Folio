@@ -1,4 +1,4 @@
-# Folio — Dan McGee
+# Folio — Daniel Gee
 
 Personal portfolio site. Static HTML, CSS and JavaScript — no build step, no
 dependencies, no Node.js required.
