@@ -1,85 +1,721 @@
 /* ==========================================================================
-   main.css — layout and components.
+   main.css — components and layout for the Daniel Gee system.
 
-   Loaded last, so it wins. This is where the site's actual look gets built
-   once the design system is settled. Right now it holds only the structural
-   primitives that every layout needs.
+   Every component here is a direct port of the JSX in the design system
+   export: same tokens, same values, same states. The JSX held its styles
+   inline; this turns them into classes without changing them.
 
-   Suggested section order as this grows:
-     1. Layout primitives   (container, grid, stack)
-     2. Site chrome         (header, nav, footer)
-     3. Page sections       (hero, work grid, about, contact)
-     4. Components          (project card, button, tag)
-     5. Page-specific       (or split into its own file)
+   Two things the export didn't specify, added here because a real site
+   needs them — both flagged in docs/design-system.md:
+     • responsive breakpoints (the export's grids were fixed-column)
+     • reduced-motion handling for the marquee and hero
+
+   Contents
+     1. Layout primitives
+     2. Header / nav
+     3. Footer
+     4. Divider
+     5. Button
+     6. Tag
+     7. Input
+     8. Card
+     9. Marquee
+    10. Page: Home (CV)
+    11. Page: Portfolio + lock gate
+    12. Page: Contact
    ========================================================================== */
 
-/* ---- 1. Layout primitives ------------------------------------------- */
 
-.container {
-  width: 100%;
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
+/* ---- 1. Layout primitives -------------------------------------------- */
+
+.page {
+  flex: 1;
 }
 
-/* Narrower measure for long-form reading. */
-.container--text {
-  max-width: var(--container-text);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-  gap: var(--grid-gap);
-}
-
-/* Vertical rhythm: even spacing between direct children. */
-.stack > * + * {
-  margin-block-start: var(--flow-space, var(--space-md));
-}
-
+/* Sections stack full-width with a black rule between them. */
 .section {
-  padding-block: var(--space-2xl);
+  padding: var(--space-7) var(--space-6);
+}
+
+.section--tall {
+  padding: var(--space-8) var(--space-6);
+}
+
+.section--ruled {
+  border-bottom: var(--border-thick) solid var(--ink-950);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-secondary);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--display-3);
+  text-transform: uppercase;
+  margin: 0;
 }
 
 
-/* ---- 2. Site chrome -------------------------------------------------- */
+/* ---- 2. Header / nav -------------------------------------------------- */
 
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: var(--z-header);
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: var(--space-md);
-  padding-block: var(--space-sm);
-  background-color: var(--color-bg);
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: var(--border-thick) solid var(--ink-950);
+  background-color: var(--surface-page);
 }
 
-.site-header__logo svg,
-.site-header__logo img {
+.site-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+}
+
+.site-header__brand img {
+  height: 36px;
   width: auto;
-  height: 2rem;
+}
+
+.site-header__wordmark {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--text-md);
+  text-transform: uppercase;
+  color: var(--ink-950);
 }
 
 .site-nav ul {
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-6);
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
+
+/* NavLink — coral underline on hover and current page. */
+.nav-link {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--ink-950);
+  text-decoration: none;
+  border-bottom: var(--border-thick) solid transparent;
+  padding-bottom: var(--space-1);
+  display: inline-block;
+}
+
+.nav-link:hover,
+.nav-link[aria-current='page'] {
+  border-bottom-color: var(--coral);
+}
+
+
+/* ---- 3. Footer -------------------------------------------------------- */
 
 .site-footer {
-  padding-block: var(--space-xl);
-  border-block-start: var(--border-width) solid var(--color-border);
-  color: var(--color-text-muted);
-  font-size: var(--text-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  padding: var(--space-5) var(--space-6);
+  border-top: var(--border-thick) solid var(--ink-950);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-secondary);
+}
+
+.site-footer a:hover {
+  color: var(--ink-950);
 }
 
 
-/* ---- 3. Page sections ------------------------------------------------ */
-/* Build these out once the design system lands. */
+/* ---- 4. Divider ------------------------------------------------------- */
+
+.divider {
+  border: none;
+  border-top: var(--border-thin) solid var(--ink-950);
+  width: 100%;
+  margin: 0;
+}
+
+.divider--thick {
+  border-top-width: var(--border-thick);
+}
+
+.divider--heavy {
+  border-top-width: var(--border-heavy);
+}
+
+.divider--inset {
+  margin: 0 var(--space-5);
+  width: auto;
+}
 
 
-/* ---- 4. Components --------------------------------------------------- */
-/* Build these out once the design system lands. */
+/* ---- 5. Button -------------------------------------------------------- */
+
+.btn {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  padding: var(--space-3) var(--space-5);
+  border: var(--border-thick) solid var(--ink-950);
+  border-radius: var(--radius-none);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  transition: transform var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+/* Hover is a hard offset shadow, not a colour shift. No soft shadows. */
+.btn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--ink-950);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn--sm {
+  font-size: var(--text-xs);
+  padding: var(--space-2) var(--space-4);
+}
+
+.btn--lg {
+  font-size: var(--text-md);
+  padding: var(--space-4) var(--space-6);
+}
+
+.btn--primary {
+  background: var(--ink-950);
+  color: var(--paper);
+}
+
+.btn--secondary {
+  background: var(--paper);
+  color: var(--ink-950);
+}
+
+.btn--accent {
+  background: var(--coral);
+  color: var(--ink-950);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink-950);
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  box-shadow: none;
+}
+
+
+/* ---- 6. Tag ----------------------------------------------------------- */
+/* The system's one rounded shape. Everything else is square. */
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-thin) solid var(--ink-950);
+  border-radius: var(--radius-pill);
+  color: var(--ink-950);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tag--accent {
+  background: var(--coral);
+}
+
+.tag--secondary {
+  background: var(--periwinkle);
+}
+
+.tag--invert {
+  background: var(--ink-950);
+  color: var(--paper);
+}
+
+
+/* ---- 7. Input --------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.field__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-secondary);
+}
+
+.field input,
+.field textarea {
+  font-family: var(--font-caption);
+  font-size: var(--text-md);
+  padding: var(--space-3);
+  background: var(--white);
+  color: var(--ink-950);
+  border: var(--border-thick) solid var(--ink-950);
+  border-radius: var(--radius-none);
+  width: 100%;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: var(--border-thick) solid var(--coral);
+  outline-offset: 2px;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+
+/* ---- 8. Card ---------------------------------------------------------- */
+
+.card {
+  border: var(--border-thick) solid var(--ink-950);
+  background: var(--surface-card);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: transform var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+a.card:hover,
+button.card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--ink-950);
+}
+
+.card__media {
+  aspect-ratio: 4 / 3;
+  background: var(--ink-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-secondary);
+}
+
+/* Imagery runs desaturated by default. */
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+}
+
+.card__body {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-top: var(--border-thick) solid var(--ink-950);
+}
+
+.card__tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--accent-primary);
+}
+
+.card__title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
+  margin: 0;
+}
+
+.card__meta {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+
+/* ---- 9. Marquee ------------------------------------------------------- */
+/* The only thing on the site that animates. Constant speed, no easing. */
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  background: var(--paper);
+  border-top: var(--border-thick) solid var(--ink-950);
+  border-bottom: var(--border-thick) solid var(--ink-950);
+  padding: var(--space-3) 0;
+}
+
+.marquee--invert {
+  background: var(--ink-950);
+}
+
+.marquee__track {
+  display: flex;
+  gap: var(--space-7);
+  white-space: nowrap;
+  animation: marquee-scroll var(--marquee-speed, 20s) linear infinite;
+  will-change: transform;
+}
+
+.marquee__item {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--text-lg);
+  text-transform: uppercase;
+  color: var(--ink-950);
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+}
+
+.marquee--invert .marquee__item {
+  color: var(--paper);
+}
+
+.marquee__item::after {
+  content: '*';
+  color: var(--accent-primary);
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Scrolling text is a genuine problem for some readers. Hold it still. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    animation: none;
+    transform: none;
+  }
+}
+
+
+/* ---- 10. Page: Home (CV) ---------------------------------------------- */
+
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-5);
+  padding: var(--space-8) var(--space-6);
+  border-bottom: var(--border-thick) solid var(--ink-950);
+}
+
+.hero__logo {
+  height: 64px;
+  width: auto;
+}
+
+.hero__name {
+  font-family: var(--font-caption);
+  font-size: var(--text-md);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--text-secondary);
+}
+
+/* Weight is driven by scroll position in main.js — 400 through 900,
+   snapped to the five weights the display face actually ships. */
+.hero__headline {
+  font-family: var(--font-display);
+  font-size: var(--display-1);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-weight: var(--hero-weight, var(--weight-regular));
+  margin: 0;
+}
+
+.hero__sub {
+  font-family: var(--font-display);
+  font-size: var(--display-3);
+  line-height: var(--leading-snug);
+  font-weight: var(--hero-weight, var(--weight-regular));
+  margin: 0;
+}
+
+.statement {
+  font-family: var(--font-caption);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-xl);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+  max-width: 45ch;
+  margin: 0;
+}
+
+.cv {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--space-7);
+}
+
+.cv__list {
+  font-family: var(--font-caption);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin: 0;
+}
+
+.role {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-5);
+  border-bottom: var(--border-thin) solid var(--ink-800);
+  padding-bottom: var(--space-4);
+}
+
+.role__title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-xl);
+  letter-spacing: var(--tracking-normal);
+  margin: 0;
+}
+
+.role__org {
+  color: var(--text-secondary);
+  margin: var(--space-1) 0 0;
+}
+
+.role__year {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  padding-top: var(--space-1);
+}
+
+.tools {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  list-style: none;
+  margin: var(--space-5) 0 0;
+  padding: 0;
+}
+
+
+/* ---- 11. Page: Portfolio + lock gate ---------------------------------- */
+
+.lock-gate {
+  padding: var(--space-9) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-5);
+}
+
+.lock-gate__title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--display-2);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+
+.lock-gate__body {
+  font-family: var(--font-caption);
+  font-size: var(--text-md);
+  color: var(--text-secondary);
+  max-width: 42ch;
+  margin: 0;
+}
+
+.lock-gate__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: min(280px, 100%);
+  text-align: left;
+}
+
+.lock-gate__error {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-950);
+  background: var(--coral);
+  padding: var(--space-1) var(--space-2);
+  text-align: center;
+}
+
+.portfolio-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ---- 12. Page: Contact ------------------------------------------------ */
+
+.contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+}
+
+.contact__title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--display-2);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.contact__body {
+  font-family: var(--font-caption);
+  font-size: var(--text-md);
+  color: var(--text-secondary);
+  max-width: 34ch;
+  margin-top: var(--space-5);
+}
+
+.contact__details {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  list-style: none;
+  padding: 0;
+}
+
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+
+/* ---- Responsive ------------------------------------------------------
+   Not specified in the design system export — the JSX used fixed column
+   counts. These collapse the grids in the order the content reads.
+   -------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cv,
+  .contact {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+@media (max-width: 640px) {
+  .section,
+  .section--tall {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .site-header,
+  .site-footer {
+    padding: var(--space-4);
+  }
+
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .site-nav ul {
+    gap: var(--space-5);
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: var(--space-7) var(--space-4);
+  }
+
+  .role {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .role__year {
+    padding-top: 0;
+  }
+}

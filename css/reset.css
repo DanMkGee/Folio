@@ -37,6 +37,14 @@ svg {
   height: auto;
 }
 
+/* The browser's own [hidden] rule lives in the UA stylesheet, so ANY author
+   `display` declaration beats it regardless of specificity — an element with
+   both `hidden` and `.some-class { display: flex }` stays visible. This makes
+   `hidden` mean hidden. */
+[hidden] {
+  display: none !important;
+}
+
 input,
 button,
 textarea,

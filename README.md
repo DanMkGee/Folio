@@ -1,11 +1,12 @@
-# Folio — Dan McGee
+# Folio — Daniel Gee
 
-Personal portfolio site. Static HTML, CSS and JavaScript — no build step, no
-dependencies, no Node.js required.
+Personal site: public CV, plus a password-gated portfolio section. Static HTML,
+CSS and JavaScript — no build step, no dependencies, no Node.js required.
 
 - **Repository:** https://github.com/DanMkGee/Folio
 - **Local folder:** `~/Desktop/Other/DanMkGee Folio`
 - **Hosting:** Vercel (not yet connected)
+- **Design system:** [`docs/design-system.md`](docs/design-system.md)
 
 ---
 
@@ -17,46 +18,53 @@ dependencies, no Node.js required.
 
 Then open http://localhost:8000. Stop with Ctrl+C.
 
-You can also just double-click `index.html` to open it in a browser. The
-server is only needed because absolute paths like `/css/main.css` don't
-resolve from the filesystem.
-
 > **One local/production difference:** Vercel strips `.html` from URLs
-> (`cleanUrls`). The local Python server doesn't, so use `/about.html`
-> locally and `/about` in your links. Write links without the extension —
-> they're correct in production, which is what matters.
+> (`cleanUrls`). The local Python server doesn't, so use `/portfolio.html`
+> locally and `/portfolio` in your links. Write links without the extension —
+> those are the ones that matter in production.
+
+**Portfolio password:** `preview` — set in `js/main.js`. See the security note
+below.
 
 ---
+
+## Pages
+
+| File | URL | What it is |
+| --- | --- | --- |
+| `index.html` | `/` | Hero, statement, marquee, CV timeline, tools |
+| `portfolio.html` | `/portfolio` | Lock gate, then a 6-card project grid |
+| `contact.html` | `/contact` | Details and an enquiry form |
 
 ## Folder structure
 
 ```
 DanMkGee Folio/
-├── index.html              Home page — served at /
+├── index.html · portfolio.html · contact.html
 ├── robots.txt              Search engine directives
-├── vercel.json             Hosting config: clean URLs, caching, security headers
+├── vercel.json             Clean URLs, caching, security headers
 ├── serve.sh                Local preview server
 │
 ├── css/
-│   ├── reset.css           Browser normalisation. Don't put design here.
+│   ├── reset.css           Browser normalisation. No design here.
 │   ├── tokens.css          ★ THE DESIGN SYSTEM. Colour, type, spacing, motion.
 │   ├── base.css            Element defaults, wired to tokens
-│   └── main.css            Layout and components
+│   └── main.css            The 7 components + page layouts
 │
 ├── js/
-│   └── main.js             Theme toggle, nav state. Plain JS, no dependencies.
+│   └── main.js             Hero weight, lock gate, contact form. No dependencies.
 │
 ├── assets/
-│   ├── logo/               Logo files
-│   ├── images/             Photography, project imagery, og-image.png
-│   ├── icons/              UI icons
-│   ├── fonts/              Self-hosted web fonts
+│   ├── logo/logo.svg       The mark. Replace in place — everything points here.
+│   ├── fonts/              Self-hosted WOFF2 (3 families, 8 files, 468 KB)
+│   ├── images/             Photography and project imagery
+│   ├── icons/              (the brand has no icon system by design)
 │   └── documents/          CV, PDFs
 │
-├── work/                   Project case studies → /work/project-name
+├── work/                   Case studies → /work/project-name
 │
 └── docs/                   Notes and templates. Never deployed.
-    ├── design-system.md    Design system documentation
+    ├── design-system.md    ★ Read this before changing the design
     └── page-template.html  Copy this to create a new page
 ```
 
@@ -65,53 +73,51 @@ DanMkGee Folio/
 | I want to… | Edit |
 | --- | --- |
 | Change colours, fonts, spacing | `css/tokens.css` |
-| Style a component or layout | `css/main.css` |
-| Add a new page | Copy `docs/page-template.html` to the root or `work/` |
-| Add an image | `assets/images/` |
-| Change what the home page says | `index.html` |
+| Restyle a component | `css/main.css` |
+| Add a page | Copy `docs/page-template.html` |
+| Change the portfolio password | `PORTFOLIO_PASSWORD` in `js/main.js` |
+| Change where the contact form sends | `CONTACT_ADDRESS` in `js/main.js` |
+| Add a project | `portfolio.html` — copy a `<li>` in `.portfolio-grid` |
 
 ---
 
-## The design system
+## Before launch
 
-`css/tokens.css` is the single source of truth. Every colour, typeface, size
-and spacing value is defined there as a CSS custom property, and every other
-stylesheet references those variables.
+Tracked in full in [`docs/design-system.md`](docs/design-system.md). The short
+version:
 
-That means the whole site can be restyled by editing one file — but only as
-long as the rule holds: **no raw hex codes, font names or pixel values outside
-`tokens.css`.**
+- [ ] Replace `hello@danielgee.studio` and `@danielgee` with real details
+- [ ] Replace the placeholder CV roles and the six placeholder projects
+- [ ] Replace `assets/logo/logo.svg` with the final mark
+- [ ] Swap the three `example.com` canonical URLs + `robots.txt` sitemap host
+- [ ] Confirm the BN Hamburg Hand licence covers webfont embedding
+- [ ] Decide on the one contrast failure (coral card labels, 2.9:1)
 
-Current values are neutral placeholders. See
-[`docs/design-system.md`](docs/design-system.md).
+### ⚠ The portfolio lock is not security
+
+The password lives in `js/main.js` and the project markup is in the page before
+unlocking — anyone who opens dev tools can read both. It's a "not ready yet"
+sign over placeholder content, and the page is `noindex`.
+
+**Before real client work goes behind it,** move the check server-side: Vercel's
+Deployment Protection, or a serverless function that only returns the content
+after checking a secret.
 
 ---
 
 ## Saving your work
 
-The Desktop folder and GitHub are two copies of the same thing. Git keeps
-them in sync.
-
-**Save local changes up to GitHub:**
+The Desktop folder and GitHub are two copies of the same thing.
 
 ```bash
 git add -A && git commit -m "Describe what changed" && git push
 ```
 
-**Pull down changes made elsewhere (e.g. edited on github.com):**
-
 ```bash
 git pull
 ```
 
-**See what's changed since your last save:**
-
-```bash
-git status
-```
-
-Get into the habit of `git pull` before you start and `git push` when you
-stop. That's the whole workflow.
+Pull before you start, push when you stop.
 
 ---
 
@@ -125,12 +131,8 @@ Not connected yet. When you're ready:
    step, so leave Build Command empty and Output Directory as the root.
 4. Deploy.
 
-After that, every push to `main` deploys automatically, and every pull request
-gets its own preview URL.
+Every push to `main` then deploys automatically, and every pull request gets its
+own preview URL.
 
-**When your domain goes live**, add it under Project → Settings → Domains,
-then update these three placeholders:
-
-- `index.html` — the `<link rel="canonical">` URL
-- `docs/page-template.html` — same
-- `robots.txt` — the `Sitemap:` host
+**When your domain goes live**, add it under Project → Settings → Domains, then
+update the canonical URLs listed above.

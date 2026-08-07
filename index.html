@@ -4,20 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Dan McGee — Portfolio</title>
-    <meta name="description" content="Portfolio of Dan McGee — design work across brand, product and motion." />
-
-    <!-- Update this once the domain is live. Vercel preview URLs will differ. -->
+    <title>Daniel Gee — Creative, Design &amp; Lead</title>
+    <meta
+      name="description"
+      content="Daniel Gee — creative, designer and lead. A decade across brand, art direction, UX/UI and editorial."
+    />
     <link rel="canonical" href="https://example.com/" />
 
-    <!-- Open Graph / social sharing -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Dan McGee — Portfolio" />
-    <meta property="og:description" content="Portfolio of Dan McGee — design work across brand, product and motion." />
+    <meta property="og:title" content="Daniel Gee — Creative, Design &amp; Lead" />
+    <meta
+      property="og:description"
+      content="A decade across brand, art direction, UX/UI and editorial."
+    />
     <meta property="og:image" content="/assets/images/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="icon" href="/assets/logo/placeholder-logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/assets/logo/logo.svg" type="image/svg+xml" />
+
+    <!-- The display face is above the fold at full size — fetch it early. -->
+    <link
+      rel="preload"
+      href="/assets/fonts/bn-hamburg-hand-regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <link rel="stylesheet" href="/css/reset.css" />
     <link rel="stylesheet" href="/css/tokens.css" />
@@ -30,30 +42,96 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="site-header container">
-      <a class="site-header__logo" href="/" aria-label="Dan McGee — home">
-        <img src="/assets/logo/placeholder-logo.svg" alt="" width="120" height="32" />
+    <header class="site-header">
+      <a class="site-header__brand" href="/" aria-label="Daniel Gee — home">
+        <img src="/assets/logo/logo.svg" alt="" width="47" height="36" />
+        <span class="site-header__wordmark">Daniel Gee</span>
       </a>
 
       <nav class="site-nav" aria-label="Primary">
         <ul role="list">
-          <li><a href="/">Work</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li><a class="nav-link" href="/">CV</a></li>
+          <li><a class="nav-link" href="/portfolio">Portfolio</a></li>
+          <li><a class="nav-link" href="/contact">Contact</a></li>
         </ul>
       </nav>
     </header>
 
-    <main id="main" class="container section stack">
-      <h1>Scaffold ready</h1>
-      <p>
-        The technical structure is in place. Design system goes in
-        <code>css/tokens.css</code>; pages and components get built from there.
-      </p>
+    <main id="main" class="page">
+      <section class="hero" data-hero>
+        <img class="hero__logo" src="/assets/logo/logo.svg" alt="" width="84" height="64" />
+        <span class="hero__name">Daniel Gee</span>
+        <h1 class="hero__headline">Creative, Design &amp; Lead.</h1>
+        <p class="hero__sub">Adobe, Figma, AI,<br />&hellip;and you know&hellip; dreaming.</p>
+      </section>
+
+      <section class="section section--tall section--ruled">
+        <h2 class="statement">
+          A decade of experience.<br />Brand, Art Direction, UX/UI, Editorial&hellip; You name it,
+          I&rsquo;ve done it.
+        </h2>
+      </section>
+
+      <!-- Marquee: items are written twice so the -50% loop is seamless.
+           The second run is hidden from screen readers. -->
+      <div class="marquee" style="--marquee-speed: 20s" aria-label="Branding, product design, web applications — available for work">
+        <div class="marquee__track">
+          <span class="marquee__item">Branding</span>
+          <span class="marquee__item">Product Design</span>
+          <span class="marquee__item">Web Applications</span>
+          <span class="marquee__item">Available for work</span>
+          <span class="marquee__item" aria-hidden="true">Branding</span>
+          <span class="marquee__item" aria-hidden="true">Product Design</span>
+          <span class="marquee__item" aria-hidden="true">Web Applications</span>
+          <span class="marquee__item" aria-hidden="true">Available for work</span>
+        </div>
+      </div>
+
+      <section class="section section--ruled">
+        <div class="cv">
+          <h2 class="section-title">CV</h2>
+
+          <ol class="cv__list" role="list">
+            <li class="role">
+              <div>
+                <h3 class="role__title">Lead Product Designer</h3>
+                <p class="role__org">Independent</p>
+              </div>
+              <span class="role__year">2023 &mdash; Now</span>
+            </li>
+            <li class="role">
+              <div>
+                <h3 class="role__title">Senior Designer</h3>
+                <p class="role__org">Studio Placeholder</p>
+              </div>
+              <span class="role__year">2019 &mdash; 2023</span>
+            </li>
+            <li class="role">
+              <div>
+                <h3 class="role__title">Designer</h3>
+                <p class="role__org">Agency Placeholder</p>
+              </div>
+              <span class="role__year">2016 &mdash; 2019</span>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Tools</h2>
+        <ul class="tools" role="list">
+          <li class="tag">Figma</li>
+          <li class="tag">Adobe CC</li>
+          <li class="tag">After Effects</li>
+          <li class="tag">AI / Prototyping</li>
+          <li class="tag">Webflow</li>
+        </ul>
+      </section>
     </main>
 
-    <footer class="site-footer container">
-      <p>&copy; 2026 Dan McGee</p>
+    <footer class="site-footer">
+      <span>&copy; 2026 Daniel Gee</span>
+      <a href="/contact">Say hello</a>
     </footer>
   </body>
 </html>

@@ -32,3 +32,7 @@ npm-debug.log*
 
 # OS / misc
 Thumbs.db
+
+# Design system exports — the contents are ported into css/ and docs/,
+# so the archives themselves don't belong in git history (~19 MB each).
+*.zip
