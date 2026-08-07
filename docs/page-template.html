@@ -1,0 +1,68 @@
+<!doctype html>
+<!--
+  Page template — copy this to create a new page.
+
+  Lives in docs/ so it never gets deployed (docs/ is in .vercelignore).
+
+  Where to put the copy:
+    about.html            → served at /about
+    contact.html          → served at /contact
+    work/project-name.html → served at /work/project-name
+
+  The .html extension is stripped automatically because vercel.json sets
+  cleanUrls: true. Always write internal links WITHOUT the extension so they
+  match what's actually served.
+
+  Paths below are absolute (/css/…) so this file works at any nesting depth.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PAGE TITLE — Dan McGee</title>
+    <meta name="description" content="PAGE DESCRIPTION" />
+    <link rel="canonical" href="https://example.com/PAGE-PATH" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="PAGE TITLE — Dan McGee" />
+    <meta property="og:description" content="PAGE DESCRIPTION" />
+    <meta property="og:image" content="/assets/images/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/assets/logo/placeholder-logo.svg" type="image/svg+xml" />
+
+    <link rel="stylesheet" href="/css/reset.css" />
+    <link rel="stylesheet" href="/css/tokens.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <script src="/js/main.js" defer></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header container">
+      <a class="site-header__logo" href="/" aria-label="Dan McGee — home">
+        <img src="/assets/logo/placeholder-logo.svg" alt="" width="120" height="32" />
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <ul role="list">
+          <li><a href="/">Work</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main" class="container section stack">
+      <h1>PAGE TITLE</h1>
+    </main>
+
+    <footer class="site-footer container">
+      <p>&copy; 2026 Dan McGee</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+/* ==========================================================================
+   main.css — layout and components.
+
+   Loaded last, so it wins. This is where the site's actual look gets built
+   once the design system is settled. Right now it holds only the structural
+   primitives that every layout needs.
+
+   Suggested section order as this grows:
+     1. Layout primitives   (container, grid, stack)
+     2. Site chrome         (header, nav, footer)
+     3. Page sections       (hero, work grid, about, contact)
+     4. Components          (project card, button, tag)
+     5. Page-specific       (or split into its own file)
+   ========================================================================== */
+
+/* ---- 1. Layout primitives ------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Narrower measure for long-form reading. */
+.container--text {
+  max-width: var(--container-text);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+/* Vertical rhythm: even spacing between direct children. */
+.stack > * + * {
+  margin-block-start: var(--flow-space, var(--space-md));
+}
+
+.section {
+  padding-block: var(--space-2xl);
+}
+
+
+/* ---- 2. Site chrome -------------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-block: var(--space-sm);
+  background-color: var(--color-bg);
+}
+
+.site-header__logo svg,
+.site-header__logo img {
+  width: auto;
+  height: 2rem;
+}
+
+.site-nav ul {
+  display: flex;
+  gap: var(--space-md);
+  list-style: none;
+}
+
+.site-footer {
+  padding-block: var(--space-xl);
+  border-block-start: var(--border-width) solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+
+/* ---- 3. Page sections ------------------------------------------------ */
+/* Build these out once the design system lands. */
+
+
+/* ---- 4. Components --------------------------------------------------- */
+/* Build these out once the design system lands. */
