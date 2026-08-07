@@ -1,12 +1,11 @@
-# Folio — Daniel Gee
+# Folio — Dan McGee
 
-Personal site: public CV, plus a password-gated portfolio section. Static HTML,
-CSS and JavaScript — no build step, no dependencies, no Node.js required.
+Personal portfolio site. Static HTML, CSS and JavaScript — no build step, no
+dependencies, no Node.js required.
 
 - **Repository:** https://github.com/DanMkGee/Folio
 - **Local folder:** `~/Desktop/Other/DanMkGee Folio`
 - **Hosting:** Vercel (not yet connected)
-- **Design system:** [`docs/design-system.md`](docs/design-system.md)
 
 ---
 
@@ -18,106 +17,113 @@ CSS and JavaScript — no build step, no dependencies, no Node.js required.
 
 Then open http://localhost:8000. Stop with Ctrl+C.
 
-> **One local/production difference:** Vercel strips `.html` from URLs
-> (`cleanUrls`). The local Python server doesn't, so use `/portfolio.html`
-> locally and `/portfolio` in your links. Write links without the extension —
-> those are the ones that matter in production.
+You can also just double-click `index.html` to open it in a browser. The
+server is only needed because absolute paths like `/css/main.css` don't
+resolve from the filesystem.
 
-**Portfolio password:** `preview` — set in `js/main.js`. See the security note
-below.
+> **One local/production difference:** Vercel strips `.html` from URLs
+> (`cleanUrls`). The local Python server doesn't, so use `/about.html`
+> locally and `/about` in your links. Write links without the extension —
+> they're correct in production, which is what matters.
 
 ---
-
-## Pages
-
-| File | URL | What it is |
-| --- | --- | --- |
-| `index.html` | `/` | Hero, statement, marquee, CV timeline, tools |
-| `portfolio.html` | `/portfolio` | Lock gate, then a 6-card project grid |
-| `contact.html` | `/contact` | Details and an enquiry form |
 
 ## Folder structure
 
 ```
 DanMkGee Folio/
-├── index.html · portfolio.html · contact.html
+├── index.html              Home page — served at /
 ├── robots.txt              Search engine directives
-├── vercel.json             Clean URLs, caching, security headers
+├── vercel.json             Hosting config: clean URLs, caching, security headers
 ├── serve.sh                Local preview server
 │
 ├── css/
-│   ├── reset.css           Browser normalisation. No design here.
+│   ├── reset.css           Browser normalisation. Don't put design here.
 │   ├── tokens.css          ★ THE DESIGN SYSTEM. Colour, type, spacing, motion.
 │   ├── base.css            Element defaults, wired to tokens
-│   └── main.css            The 7 components + page layouts
+│   └── main.css            Layout and components
 │
 ├── js/
-│   └── main.js             Hero weight, lock gate, contact form. No dependencies.
+│   └── main.js             Theme toggle, nav state. Plain JS, no dependencies.
 │
 ├── assets/
-│   ├── logo/logo.svg       The mark. Replace in place — everything points here.
-│   ├── fonts/              Self-hosted WOFF2 (3 families, 8 files, 468 KB)
-│   ├── images/             Photography and project imagery
-│   ├── icons/              (the brand has no icon system by design)
+│   ├── logo/               Logo files
+│   ├── images/             Photography, project imagery, og-image.png
+│   ├── icons/              UI icons
+│   ├── fonts/              Self-hosted web fonts
 │   └── documents/          CV, PDFs
 │
-├── work/                   Case studies → /work/project-name
+├── work/                   Project case studies → /work/project-name
+│
+├── blue-projects/          Separate brand, own stylesheets → /blue-projects
 │
 └── docs/                   Notes and templates. Never deployed.
-    ├── design-system.md    ★ Read this before changing the design
+    ├── design-system.md    Design system documentation
     └── page-template.html  Copy this to create a new page
 ```
+
+### Projects in this repo
+
+The repo holds more than the folio. Each project below is its own brand and
+keeps its own stylesheets — the root `css/` belongs to the folio alone.
+
+| Project | Path | Status |
+| --- | --- | --- |
+| Folio (Daniel Gee) | `/` | Scaffold only — design pending |
+| [Blue Projects](blue-projects/README.md) | `/blue-projects` | Folder structure only |
 
 ### Where things go
 
 | I want to… | Edit |
 | --- | --- |
 | Change colours, fonts, spacing | `css/tokens.css` |
-| Restyle a component | `css/main.css` |
-| Add a page | Copy `docs/page-template.html` |
-| Change the portfolio password | `PORTFOLIO_PASSWORD` in `js/main.js` |
-| Change where the contact form sends | `CONTACT_ADDRESS` in `js/main.js` |
-| Add a project | `portfolio.html` — copy a `<li>` in `.portfolio-grid` |
+| Style a component or layout | `css/main.css` |
+| Add a new page | Copy `docs/page-template.html` to the root or `work/` |
+| Add an image | `assets/images/` |
+| Change what the home page says | `index.html` |
 
 ---
 
-## Before launch
+## The design system
 
-Tracked in full in [`docs/design-system.md`](docs/design-system.md). The short
-version:
+`css/tokens.css` is the single source of truth. Every colour, typeface, size
+and spacing value is defined there as a CSS custom property, and every other
+stylesheet references those variables.
 
-- [ ] Replace `hello@danielgee.studio` and `@danielgee` with real details
-- [ ] Replace the placeholder CV roles and the six placeholder projects
-- [ ] Replace `assets/logo/logo.svg` with the final mark
-- [ ] Swap the three `example.com` canonical URLs + `robots.txt` sitemap host
-- [ ] Confirm the BN Hamburg Hand licence covers webfont embedding
-- [ ] Decide on the one contrast failure (coral card labels, 2.9:1)
+That means the whole site can be restyled by editing one file — but only as
+long as the rule holds: **no raw hex codes, font names or pixel values outside
+`tokens.css`.**
 
-### ⚠ The portfolio lock is not security
-
-The password lives in `js/main.js` and the project markup is in the page before
-unlocking — anyone who opens dev tools can read both. It's a "not ready yet"
-sign over placeholder content, and the page is `noindex`.
-
-**Before real client work goes behind it,** move the check server-side: Vercel's
-Deployment Protection, or a serverless function that only returns the content
-after checking a secret.
+Current values are neutral placeholders. See
+[`docs/design-system.md`](docs/design-system.md).
 
 ---
 
 ## Saving your work
 
-The Desktop folder and GitHub are two copies of the same thing.
+The Desktop folder and GitHub are two copies of the same thing. Git keeps
+them in sync.
+
+**Save local changes up to GitHub:**
 
 ```bash
 git add -A && git commit -m "Describe what changed" && git push
 ```
 
+**Pull down changes made elsewhere (e.g. edited on github.com):**
+
 ```bash
 git pull
 ```
 
-Pull before you start, push when you stop.
+**See what's changed since your last save:**
+
+```bash
+git status
+```
+
+Get into the habit of `git pull` before you start and `git push` when you
+stop. That's the whole workflow.
 
 ---
 
@@ -131,8 +137,12 @@ Not connected yet. When you're ready:
    step, so leave Build Command empty and Output Directory as the root.
 4. Deploy.
 
-Every push to `main` then deploys automatically, and every pull request gets its
-own preview URL.
+After that, every push to `main` deploys automatically, and every pull request
+gets its own preview URL.
 
-**When your domain goes live**, add it under Project → Settings → Domains, then
-update the canonical URLs listed above.
+**When your domain goes live**, add it under Project → Settings → Domains,
+then update these three placeholders:
+
+- `index.html` — the `<link rel="canonical">` URL
+- `docs/page-template.html` — same
+- `robots.txt` — the `Sitemap:` host
