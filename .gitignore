@@ -2,7 +2,10 @@
 .DS_Store
 .AppleDouble
 .LSOverride
-Icon?
+# The macOS custom-folder-icon file is literally "Icon" + CR. A bare Icon?
+# wildcard matches any 5-character name, and since core.ignorecase is true on
+# macOS that silently swallowed assets/icons. Anchor it to the CR.
+Icon[\r]
 ._*
 .Spotlight-V100
 .Trashes

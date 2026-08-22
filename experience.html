@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://use.typekit.net/myg7nbr.css" />
 
     <link rel="stylesheet" href="/css/reset.css" />
+    <link rel="stylesheet" href="/css/hero.css" />
     <link rel="stylesheet" href="/css/job-description.css" />
 
     <style>
@@ -25,13 +26,59 @@
       }
     </style>
 
+    <script src="/js/hero.js" defer></script>
     <script src="/js/job-description.js" defer></script>
+
+    <script>
+      document.documentElement.className += ' js';
+    </script>
   </head>
 
   <body>
 
-    <main>
-      <!-- ================================================================
+    <main class="cv">
+      <div class="cv-inner">
+        <!-- ================================================================
+             Hero
+             Thermal throughout, at the Display end of the optical size axis.
+             Each line is reveal-on-enter (outer) plus scroll drift (inner
+             span); data-drift is the depth, so the lines separate slightly
+             as the block scrolls away instead of moving as one slab.
+             ================================================================ -->
+        <section class="hero" data-hero>
+          <p class="hero__name reveal" style="--delay: 0ms">
+            <span class="hero__drift" data-drift="0.10">Daniel Gee</span>
+          </p>
+
+          <h1 class="hero__line hero__line--bold reveal" style="--delay: 140ms">
+            <span class="hero__drift" data-drift="0.26">Creative, Design &amp; Lead.</span>
+          </h1>
+
+          <p class="hero__line hero__line--tools reveal" style="--delay: 280ms">
+            <span class="hero__drift" data-drift="0.40">
+              Adobe<img class="hero__icon hero__icon--adobe" src="/assets/icons/hero-adobe.svg" alt="" width="65" height="66" />
+              Figma<img class="hero__icon hero__icon--figma" src="/assets/icons/hero-figma.svg" alt="" width="58" height="75" />
+              AI<img class="hero__icon hero__icon--ai" src="/assets/icons/hero-ai.svg" alt="" width="54" height="47" />
+            </span>
+          </p>
+
+          <p class="hero__line hero__line--dream reveal" style="--delay: 420ms">
+            <span class="hero__drift" data-drift="0.54">&hellip;and you know&hellip; dreaming.</span>
+          </p>
+        </section>
+
+        <!-- ================================================================
+             Experience
+             Title and rule are measured off Group 3.svg — the rule sits on
+             the cap line, not the baseline, which is why it aligns to the top.
+             ================================================================ -->
+        <section class="xp" aria-labelledby="xp-title">
+          <div class="xp__head">
+            <h2 class="xp__title reveal" id="xp-title">Experience</h2>
+            <span class="xp__rule" aria-hidden="true"></span>
+          </div>
+
+          <!-- ================================================================
            Job description — a tab set.
 
            DOM order is chronological (oldest first), which is also
@@ -135,6 +182,8 @@
             </div>
           </article>
         </div>
+        </section>
+          </div>
         </section>
       </div>
     </main>
