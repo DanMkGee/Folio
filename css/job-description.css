@@ -50,6 +50,11 @@
   --stroke: max(1px, calc(2 * var(--u)));
   --arrow: calc(38 * var(--u));
   --panel-w: var(--pill-w-active);
+  /* BRANCH: centred variant.
+     On main this is set from JS to sit under the selected pill. Here it's a
+     constant — the panel is centred on the component and stays put whichever
+     position is open, so only its content changes. (1490 - 688) / 2 = 401. */
+  --panel-x: calc(401 * var(--u));
 
   /* ---- Type ------------------------------------------------------- */
   --label: calc(21 * var(--u));
@@ -185,8 +190,7 @@
 
 .jd__panel {
   width: var(--panel-w);
-  /* Set by JS from the active pill's offset, so the panel always sits
-     directly under it. */
+  /* Centred, not tracking the pill — see --panel-x above. */
   margin-left: var(--panel-x, 0px);
   text-align: center;
 }

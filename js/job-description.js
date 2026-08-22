@@ -34,20 +34,11 @@
   if (index < 0) index = 0;
 
   /* ---- Panel position ---------------------------------------------------
-     The panel sits under the selected pill. Measuring that pill is the wrong
-     way to find it: hovering any other pill collapses the selected one, so
-     the row re-flows and the selected pill slides — as far as 448px — which
-     would drag the panel off the canvas.
-
-     It doesn't need measuring. Every pill before the selected one is 240 wide
-     and overlaps its neighbour by 40, so the selected pill's resting offset is
-     always index x 200 design units. Expressed in --u it also scales for free,
-     which is why nothing here watches for resize.
+     BRANCH: centred variant. --panel-x is a constant in CSS here, so there's
+     nothing to compute — the panel and its arrows stay in the middle of the
+     component and only the content changes. On main this function measures
+     the selected pill instead.
      -------------------------------------------------------------------- */
-
-  function syncPanelX() {
-    root.style.setProperty('--panel-x', `calc(${index * 200} * var(--u))`);
-  }
 
   /* ---- Selection --------------------------------------------------------- */
 
@@ -71,7 +62,6 @@
     void panels[index].offsetWidth;
     panels[index].setAttribute('data-entering', '');
 
-    syncPanelX();
 
     // On the mobile rail the pills scroll rather than cascade.
     tabs[index].scrollIntoView({
@@ -159,5 +149,4 @@
   tabs.forEach((t, n) => {
     t.tabIndex = n === index ? 0 : -1;
   });
-  syncPanelX();
 })();
