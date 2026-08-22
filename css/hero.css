@@ -22,6 +22,10 @@
    traps you: the Experience section is taller than a viewport. */
 html {
   scroll-snap-type: y proximity;
+  /* The nav is fixed at the top now, so both snap positions and anchor
+     scrolling have to stop short of it — otherwise a section's first line
+     lands underneath the bar. */
+  scroll-padding-top: clamp(72px, 9vh, 104px);
   /* For the CV nav link. Turned off under reduced motion, where a long
      smooth scroll is exactly the kind of movement that setting is about. */
   scroll-behavior: smooth;
@@ -161,40 +165,6 @@ html {
   transform: translateY(-0.06em);
 }
 
-/* The Adobe mark's three squiggles were removed from the SVG so they can be
-   drawn live and undulate. Positioned as a fraction of the mark: the cluster
-   sat at x3.69-9.85, y0.60-11.36 of a 65.34 x 65.82 viewBox. */
-.hero__mark {
-  position: relative;
-  display: inline-block;
-}
-
-/* Block, or the inline image's baseline gap makes the wrapper taller than the
-   artwork and the percentage-positioned overlay lands off the mark. */
-.hero__mark img {
-  display: block;
-  height: 100%;
-  width: auto;
-}
-
-.hero__wiggle {
-  position: absolute;
-  left: 5.65%;
-  top: 0.91%;
-  width: 9.43%;
-  height: 16.35%;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.hero__wiggle path {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 0.72;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
 /* ---- Experience section title -----------------------------------------
    From Group 3.svg: the title's ink is 405.6 x 49.9 starting at x27.3/y20.5,
    with the rule running x452 to x1489 at y24 — level with the cap line, not
@@ -209,7 +179,7 @@ html {
   min-height: 100vh;
   min-height: 100svh;
   scroll-snap-align: start;
-  padding-block: calc(40 * var(--u)) calc(90 * var(--u));
+  padding-block: calc(80 * var(--u)) calc(90 * var(--u));   /* doubled top */
 }
 
 .xp__head {
@@ -221,14 +191,15 @@ html {
 .xp__title {
   flex: 0 0 auto;
   margin: 0;
+  /* Matches the "…and you know… dreaming." line exactly: Thin Display at the
+     hero's size, title case. The old measured size, weight and the -0.084em
+     tracking all belonged to the uppercase lockup with the rule, which is
+     gone. */
   font-family: 'thermal-variable', Georgia, serif;
-  /* cap 49.9 / 0.70 = 71.3 */
-  font-size: calc(71.3 * var(--u));
-  font-variation-settings: 'wght' 900, 'opsz' 900;
-  /* Natural ink is 465 at this size; the artwork sets it at 405.6. */
-  letter-spacing: -0.084em;
-  line-height: 0.7;
-  text-transform: uppercase;
+  font-size: calc(112 * var(--u));
+  font-variation-settings: 'wght' 100, 'opsz' 900;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
   color: var(--ink);
 }
 
@@ -312,7 +283,7 @@ html {
 .sitenav {
   position: fixed;
   left: 50%;
-  bottom: clamp(16px, 3vh, 34px);
+  top: clamp(16px, 3vh, 34px);
   transform: translateX(-50%);
   z-index: 40;
   /* Its own unit: the bar is viewport-fixed, so it can't inherit the page's
