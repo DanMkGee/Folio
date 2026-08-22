@@ -74,6 +74,20 @@
           <p class="hero__line hero__line--dream reveal" style="--delay: 420ms">
             <span class="hero__drift" data-drift="0.54">&hellip;and you know&hellip; dreaming.</span>
           </p>
+
+          <!-- Strapline: same reveal, picking up after the four lines above,
+               and continuing the drift depths so it keeps separating with them. -->
+          <div class="hero__strap">
+            <p class="hero__strap-lead reveal" style="--delay: 580ms">
+              <span class="hero__drift" data-drift="0.62">A decade of experience.</span>
+            </p>
+            <p class="hero__strap-line reveal" style="--delay: 680ms">
+              <span class="hero__drift" data-drift="0.68">Brand, Art Direction, UX/UI, Editorial&hellip;</span>
+            </p>
+            <p class="hero__strap-line reveal" style="--delay: 780ms">
+              <span class="hero__drift" data-drift="0.74">You name it, I&rsquo;ve done it.</span>
+            </p>
+          </div>
         </section>
 
         <!-- ================================================================
@@ -81,10 +95,9 @@
              Title and rule are measured off Group 3.svg — the rule sits on
              the cap line, not the baseline, which is why it aligns to the top.
              ================================================================ -->
-        <section class="xp" aria-labelledby="xp-title">
+        <section class="xp" id="cv" aria-labelledby="xp-title">
           <div class="xp__head">
             <h2 class="xp__title reveal" id="xp-title">Experience</h2>
-            <span class="xp__rule" aria-hidden="true"></span>
           </div>
 
           <!-- ================================================================
@@ -204,7 +217,7 @@
          ================================================================ -->
     <nav class="sitenav" aria-label="Sections">
       <ul class="sitenav__list">
-        <li class="sitenav__item"><span class="sitenav__link" role="link" aria-disabled="true" tabindex="0">CV</span></li>
+        <li class="sitenav__item"><a class="sitenav__link" href="#cv">CV</a></li>
         <li class="sitenav__item"><span class="sitenav__link" role="link" aria-disabled="true" tabindex="0">Folio</span></li>
         <li class="sitenav__item"><span class="sitenav__link" role="link" aria-disabled="true" tabindex="0">Contact</span></li>
         <li class="sitenav__item"><span class="sitenav__link" role="link" aria-disabled="true" tabindex="0">Downloads</span></li>

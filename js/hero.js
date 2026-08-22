@@ -18,7 +18,7 @@
 
   /* ---- Reveal ---------------------------------------------------------- */
 
-  const revealables = [...document.querySelectorAll('.reveal, .xp__rule')];
+  const revealables = [...document.querySelectorAll('.reveal')];
 
   if (reduce.matches || !('IntersectionObserver' in window)) {
     revealables.forEach((el) => el.classList.add('is-in'));
@@ -80,6 +80,27 @@
     window.addEventListener('resize', onScroll, { passive: true });
     apply();
   }
+  /* ---- In-page nav ------------------------------------------------------
+     Handled here rather than left to the browser: with scroll-snap proximity
+     on the page, a hash-driven smooth scroll gets pulled back to whichever
+     boundary it started nearest and never reaches the target. An explicit
+     scrollIntoView isn't subject to that.
+     -------------------------------------------------------------------- */
+
+  document.querySelectorAll('.sitenav__link[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({
+        behavior: reduce.matches ? 'auto' : 'smooth',
+        block: 'start',
+      });
+      // Keep the URL honest without letting the browser re-run its own scroll.
+      history.replaceState(null, '', link.getAttribute('href'));
+    });
+  });
+
   /* ---- Undulating squiggles --------------------------------------------
      The Adobe mark's three marks were removed from the SVG so they can be
      drawn live. Each is a travelling sine down a vertical axis, described by

@@ -22,6 +22,15 @@
    traps you: the Experience section is taller than a viewport. */
 html {
   scroll-snap-type: y proximity;
+  /* For the CV nav link. Turned off under reduced motion, where a long
+     smooth scroll is exactly the kind of movement that setting is about. */
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 .cv {
@@ -97,6 +106,33 @@ html {
   font-variation-settings: 'wght' 100, 'opsz' 900;   /* Thin Display */
 }
 
+/* ---- Strapline ---------------------------------------------------------
+   Sits well below the hero lines and at roughly a third their size — the
+   lead is Bold Display, the two lines under it Thin Display, same as the
+   pairing in the artwork. -------------------------------------------- */
+
+.hero__strap {
+  margin-top: calc(96 * var(--u));
+}
+
+.hero__strap-lead,
+.hero__strap-line {
+  font-family: 'thermal-variable', Georgia, serif;
+  font-size: calc(50 * var(--u));
+  line-height: 1.24;
+  letter-spacing: -0.012em;
+  margin: 0;
+}
+
+.hero__strap-lead {
+  font-variation-settings: 'wght' 700, 'opsz' 900;
+  margin-bottom: calc(6 * var(--u));
+}
+
+.hero__strap-line {
+  font-variation-settings: 'wght' 100, 'opsz' 900;
+}
+
 /* ---- Inline icons ------------------------------------------------------
    These sit in the text line, so they're sized in em and nudged off the
    baseline individually — each drawing has its own optical centre and they
@@ -166,22 +202,25 @@ html {
    -------------------------------------------------------------------- */
 
 .xp {
+  /* A snap point is only reachable if the document can scroll far enough to
+     put it at the top. Without this the section sat past max scroll, so
+     proximity snap kept pulling back to the hero and the CV link appeared to
+     do nothing. Filling a viewport makes its snap point reachable. */
+  min-height: 100vh;
+  min-height: 100svh;
   scroll-snap-align: start;
   padding-block: calc(40 * var(--u)) calc(90 * var(--u));
 }
 
 .xp__head {
   display: flex;
-  align-items: flex-start;
-  gap: calc(19 * var(--u));          /* 452 - 432.9 */
-  margin-bottom: calc(18 * var(--u));
+  justify-content: center;
+  margin-bottom: calc(30 * var(--u));
 }
 
 .xp__title {
   flex: 0 0 auto;
-  /* The artwork insets the title by 27.3 while the pills below stay flush at
-     x1 — an optical inset for the E's serif. Without it the rule overruns. */
-  margin: 0 0 0 calc(27.3 * var(--u));
+  margin: 0;
   font-family: 'thermal-variable', Georgia, serif;
   /* cap 49.9 / 0.70 = 71.3 */
   font-size: calc(71.3 * var(--u));
@@ -191,16 +230,6 @@ html {
   line-height: 0.7;
   text-transform: uppercase;
   color: var(--ink);
-}
-
-/* Sits on the cap line, which is why it aligns to the top of the title
-   rather than its middle. */
-.xp__rule {
-  flex: 1 1 auto;
-  height: max(1px, calc(2 * var(--u)));
-  margin-top: calc(3.5 * var(--u));
-  background: var(--ink);
-  transform-origin: left center;
 }
 
 /* ==========================================================================
@@ -239,9 +268,7 @@ html {
 
 @media (prefers-reduced-motion: reduce) {
   .js .reveal,
-  .js .reveal.is-in,
-  .js .xp__rule,
-  .js .xp__rule.is-in {
+  .js .reveal.is-in {
     opacity: 1;
     transform: none;
     transition: none;
