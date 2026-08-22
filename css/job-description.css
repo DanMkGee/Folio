@@ -199,7 +199,7 @@
 .jd__heading {
   margin: 0;
   font-family: 'early-sans-variable', system-ui, sans-serif;
-  font-weight: 700;
+  font-weight: 500;
   font-size: var(--heading);
   line-height: 1.05;
   text-transform: uppercase;
