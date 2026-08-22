@@ -56,7 +56,16 @@
 
           <p class="hero__line hero__line--tools reveal" style="--delay: 280ms">
             <span class="hero__drift" data-drift="0.40">
-              Adobe<img class="hero__icon hero__icon--adobe" src="/assets/icons/hero-adobe.svg" alt="" width="65" height="66" />
+              Adobe<span class="hero__mark hero__icon hero__icon--adobe">
+                <img src="/assets/icons/hero-adobe.svg" alt="" width="65" height="66" />
+                <!-- Three undulating strokes, drawn live by js/hero.js. The
+                     static originals were removed from the SVG. -->
+                <svg class="hero__wiggle" viewBox="0 0 6.16 10.76" aria-hidden="true" focusable="false" data-wiggle>
+                  <path data-w="0.94,3.12,9.88,0.62,1.35,0" />
+                  <path data-w="3.91,4.94,10.76,0.70,1.15,2.1" />
+                  <path data-w="4.80,1.78,6.14,0.58,1.55,4.2" />
+                </svg>
+              </span>
               Figma<img class="hero__icon hero__icon--figma" src="/assets/icons/hero-figma.svg" alt="" width="58" height="75" />
               AI<img class="hero__icon hero__icon--ai" src="/assets/icons/hero-ai.svg" alt="" width="54" height="47" />
             </span>
@@ -187,5 +196,19 @@
         </section>
       </div>
     </main>
+
+    <!-- ================================================================
+         Floating nav. Destinations don't exist yet, so every item is an
+         inert placeholder carrying the hover behaviour only — marked
+         aria-disabled rather than pointing at a URL that would 404.
+         ================================================================ -->
+    <nav class="sitenav" aria-label="Sections">
+      <ul class="sitenav__list">
+        <li class="sitenav__item"><span class="sitenav__link" role="link" aria-disabled="true" tabindex="0">CV</span></li>
+        <li class="sitenav__item"><span class="sitenav__link" role="link" aria-disabled="true" tabindex="0">Folio</span></li>
+        <li class="sitenav__item"><span class="sitenav__link" role="link" aria-disabled="true" tabindex="0">Contact</span></li>
+        <li class="sitenav__item"><span class="sitenav__link" role="link" aria-disabled="true" tabindex="0">Downloads</span></li>
+      </ul>
+    </nav>
   </body>
 </html>

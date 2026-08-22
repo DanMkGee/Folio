@@ -16,6 +16,14 @@
    whole page scales proportionally — same system the Experience component uses.
    ========================================================================== */
 
+/* The snap container. Without this the scroll-snap-align declarations below
+   are inert — align only has meaning inside a declared snap container.
+   Proximity, so it settles on a boundary when you stop near one but never
+   traps you: the Experience section is taller than a viewport. */
+html {
+  scroll-snap-type: y proximity;
+}
+
 .cv {
   container-type: inline-size;
   max-width: 1490px;
@@ -32,6 +40,12 @@
 /* ---- Hero ------------------------------------------------------------- */
 
 .hero {
+  /* Proximity, not mandatory: it settles on a boundary when you stop near one
+     but never traps you mid-scroll, which matters because the Experience
+     section is taller than a viewport. */
+  min-height: 100vh;
+  min-height: 100svh;
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -65,9 +79,10 @@
   letter-spacing: -0.02em;
 }
 
-/* The one bold line. */
+/* Lighter than it was, but still the heaviest line — it stays dominant
+   against the Thin lines around it. */
 .hero__line--bold {
-  font-variation-settings: 'wght' 700, 'opsz' 900;
+  font-variation-settings: 'wght' 400, 'opsz' 900;
   letter-spacing: -0.028em;
   margin-bottom: calc(30 * var(--u));
 }
@@ -79,7 +94,7 @@
 
 .hero__line--dream {
   font-size: calc(112 * var(--u));
-  font-variation-settings: 'wght' 300, 'opsz' 900;
+  font-variation-settings: 'wght' 100, 'opsz' 900;   /* Thin Display */
 }
 
 /* ---- Inline icons ------------------------------------------------------
@@ -110,6 +125,40 @@
   transform: translateY(-0.06em);
 }
 
+/* The Adobe mark's three squiggles were removed from the SVG so they can be
+   drawn live and undulate. Positioned as a fraction of the mark: the cluster
+   sat at x3.69-9.85, y0.60-11.36 of a 65.34 x 65.82 viewBox. */
+.hero__mark {
+  position: relative;
+  display: inline-block;
+}
+
+/* Block, or the inline image's baseline gap makes the wrapper taller than the
+   artwork and the percentage-positioned overlay lands off the mark. */
+.hero__mark img {
+  display: block;
+  height: 100%;
+  width: auto;
+}
+
+.hero__wiggle {
+  position: absolute;
+  left: 5.65%;
+  top: 0.91%;
+  width: 9.43%;
+  height: 16.35%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.hero__wiggle path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.72;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* ---- Experience section title -----------------------------------------
    From Group 3.svg: the title's ink is 405.6 x 49.9 starting at x27.3/y20.5,
    with the rule running x452 to x1489 at y24 — level with the cap line, not
@@ -117,6 +166,7 @@
    -------------------------------------------------------------------- */
 
 .xp {
+  scroll-snap-align: start;
   padding-block: calc(40 * var(--u)) calc(90 * var(--u));
 }
 
@@ -160,9 +210,11 @@
    scripting off the content is simply visible rather than stuck at opacity 0.
    ========================================================================== */
 
+/* Each line arrives from the left and fades up, staggered. No mask — the
+   lines simply slide, so descenders and the inline marks aren't clipped. */
 .js .reveal {
   opacity: 0;
-  transform: translateY(calc(38 * var(--u)));
+  transform: translateX(-10%);
 }
 
 .js .reveal.is-in {
@@ -170,16 +222,6 @@
   transform: none;
   transition: opacity 900ms var(--ease-out) var(--delay, 0ms),
     transform 1100ms var(--ease-out) var(--delay, 0ms);
-}
-
-/* The rule draws itself rather than fading. */
-.js .xp__rule {
-  transform: scaleX(0);
-}
-
-.js .xp__rule.is-in {
-  transform: scaleX(1);
-  transition: transform 1200ms var(--ease-out) 120ms;
 }
 
 /* Scroll drift lives on an INNER span, not on .reveal itself. Both want
@@ -224,5 +266,118 @@
 
   .xp__head {
     gap: calc(14 * var(--u));
+  }
+}
+
+/* ==========================================================================
+   Bottom nav
+   --------------------------------------------------------------------------
+   Same device as the Experience cascade: unfilled capsules that overlap by
+   40 so their strokes cross and read as one chain. Horizontal only — no
+   vertical step, since there's no chronology to express here.
+
+   Hover behaves like the cascade pills: the capsule widens and the label
+   tracks out to fill it, both easing together so it reads as one movement.
+   Unlike the cascade the total width isn't fixed, so the bar grows from its
+   centre rather than displacing a sibling.
+   ========================================================================== */
+
+.sitenav {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(16px, 3vh, 34px);
+  transform: translateX(-50%);
+  z-index: 40;
+  /* Its own unit: the bar is viewport-fixed, so it can't inherit the page's
+     container-query scale. */
+  --nav-u: clamp(0.62px, 0.13vw + 0.44px, 1px);
+}
+
+.sitenav__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sitenav__item + .sitenav__item {
+  margin-left: calc(-40 * var(--nav-u));
+}
+
+.sitenav__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(200 * var(--nav-u));
+  height: calc(42 * var(--nav-u));
+  padding: 0 calc(18 * var(--nav-u));
+  border: max(1px, calc(2 * var(--nav-u))) solid var(--ink, #000);
+  border-radius: 999px;
+  background: #f5f5f5;
+  color: var(--ink, #000);
+  font-family: 'early-sans-variable', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: calc(19 * var(--nav-u));
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: width 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    letter-spacing 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Filled, unlike the cascade — the bar floats over content, so the capsules
+   need to occlude what's behind them to stay legible. */
+
+.sitenav__link:hover,
+.sitenav__link:focus-visible {
+  width: calc(320 * var(--nav-u));
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;      /* tracking adds a trailing gap; re-centre */
+}
+
+.sitenav__link:focus-visible {
+  outline: max(1px, calc(2 * var(--nav-u))) solid var(--ink, #000);
+  outline-offset: 3px;
+}
+
+/* Placeholder destinations — nothing to navigate to yet. Marked so it's
+   obvious in the markup rather than looking like a broken link. */
+.sitenav__link[aria-disabled='true'] {
+  cursor: default;
+}
+
+@media (hover: none) {
+  .sitenav__link:hover {
+    width: calc(200 * var(--nav-u));
+    letter-spacing: normal;
+    text-indent: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sitenav__link {
+    transition: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .sitenav__link {
+    width: auto;
+    padding: 0 calc(14 * var(--nav-u));
+    font-size: calc(15 * var(--nav-u));
+  }
+
+  .sitenav__link:hover,
+  .sitenav__link:focus-visible {
+    width: auto;
+    letter-spacing: 0.12em;
+    text-indent: 0.12em;
+  }
+
+  .sitenav__item + .sitenav__item {
+    margin-left: calc(-14 * var(--nav-u));
   }
 }
