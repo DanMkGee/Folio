@@ -42,95 +42,75 @@
          ================================================================== -->
     <svg class="jd__filters" aria-hidden="true" focusable="false" width="0" height="0">
       <defs>
-      <filter id="jd-bleed-1" x="-20%" y="-110%" width="140%" height="320%"
+      <filter id="jd-bleed-1" x="-35%" y="-140%" width="170%" height="380%"
               color-interpolation-filters="sRGB">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="0.4" result="b" />
-        <feTurbulence type="fractalNoise" baseFrequency="0.92" numOctaves="4" seed="11" result="raw" />
-        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
-             channel would punch holes straight through the pill. -->
-        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0    0    0    0 1" result="n" />
+        <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="4" seed="11" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.0"
+                           xChannelSelector="R" yChannelSelector="G" result="dm" />
+        <feMorphology operator="dilate" radius="0.15" in="dm" result="d" />
+        <feGaussianBlur in="d" stdDeviation="0.5" result="b" />
         <feComposite in="b" in2="n" operator="arithmetic"
-                     k1="0.35" k2="1" k3="0" k4="-0.175" result="g" />
-        <feComponentTransfer in="g">
-          <feFuncR type="linear" slope="1.7" intercept="-0.35" />
-          <feFuncG type="linear" slope="1.7" intercept="-0.35" />
-          <feFuncB type="linear" slope="1.7" intercept="-0.35" />
-        </feComponentTransfer>
+                     k1="1.05" k2="0.66" k3="0" k4="0" result="m" />
+        <feColorMatrix in="m" type="matrix" values="0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 6.0 -1.85" />
       </filter>
-      <filter id="jd-bleed-2" x="-20%" y="-110%" width="140%" height="320%"
+      <filter id="jd-bleed-2" x="-35%" y="-140%" width="170%" height="380%"
               color-interpolation-filters="sRGB">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="b" />
-        <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="4" seed="15" result="raw" />
-        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
-             channel would punch holes straight through the pill. -->
-        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0    0    0    0 1" result="n" />
+        <feTurbulence type="fractalNoise" baseFrequency="1.05" numOctaves="4" seed="15" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="4.0"
+                           xChannelSelector="R" yChannelSelector="G" result="dm" />
+        <feMorphology operator="dilate" radius="0.3" in="dm" result="d" />
+        <feGaussianBlur in="d" stdDeviation="0.85" result="b" />
         <feComposite in="b" in2="n" operator="arithmetic"
-                     k1="0.62" k2="1" k3="0" k4="-0.31" result="g" />
-        <feComponentTransfer in="g">
-          <feFuncR type="linear" slope="2.3" intercept="-0.65" />
-          <feFuncG type="linear" slope="2.3" intercept="-0.65" />
-          <feFuncB type="linear" slope="2.3" intercept="-0.65" />
-        </feComponentTransfer>
+                     k1="1.45" k2="0.5" k3="0" k4="0" result="m" />
+        <feColorMatrix in="m" type="matrix" values="0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 6.0 -1.95" />
       </filter>
-      <filter id="jd-bleed-3" x="-20%" y="-110%" width="140%" height="320%"
+      <filter id="jd-bleed-3" x="-35%" y="-140%" width="170%" height="380%"
               color-interpolation-filters="sRGB">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="1.3" result="b" />
-        <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="4" seed="19" result="raw" />
-        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
-             channel would punch holes straight through the pill. -->
-        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0    0    0    0 1" result="n" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" seed="19" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="6.5"
+                           xChannelSelector="R" yChannelSelector="G" result="dm" />
+        <feMorphology operator="dilate" radius="0.45" in="dm" result="d" />
+        <feGaussianBlur in="d" stdDeviation="1.25" result="b" />
         <feComposite in="b" in2="n" operator="arithmetic"
-                     k1="0.95" k2="1" k3="0" k4="-0.475" result="g" />
-        <feComponentTransfer in="g">
-          <feFuncR type="linear" slope="3.0" intercept="-1.0" />
-          <feFuncG type="linear" slope="3.0" intercept="-1.0" />
-          <feFuncB type="linear" slope="3.0" intercept="-1.0" />
-        </feComponentTransfer>
+                     k1="1.9" k2="0.36" k3="0" k4="0" result="m" />
+        <feColorMatrix in="m" type="matrix" values="0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 6.0 -2.05" />
       </filter>
-      <filter id="jd-bleed-4" x="-20%" y="-110%" width="140%" height="320%"
+      <filter id="jd-bleed-4" x="-35%" y="-140%" width="170%" height="380%"
               color-interpolation-filters="sRGB">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="2.0" result="b" />
-        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="4" seed="23" result="raw" />
-        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
-             channel would punch holes straight through the pill. -->
-        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0    0    0    0 1" result="n" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" seed="23" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="9.5"
+                           xChannelSelector="R" yChannelSelector="G" result="dm" />
+        <feMorphology operator="dilate" radius="0.6" in="dm" result="d" />
+        <feGaussianBlur in="d" stdDeviation="1.75" result="b" />
         <feComposite in="b" in2="n" operator="arithmetic"
-                     k1="1.3" k2="1" k3="0" k4="-0.65" result="g" />
-        <feComponentTransfer in="g">
-          <feFuncR type="linear" slope="3.8" intercept="-1.4" />
-          <feFuncG type="linear" slope="3.8" intercept="-1.4" />
-          <feFuncB type="linear" slope="3.8" intercept="-1.4" />
-        </feComponentTransfer>
+                     k1="2.35" k2="0.24" k3="0" k4="0" result="m" />
+        <feColorMatrix in="m" type="matrix" values="0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 6.0 -2.15" />
       </filter>
-      <filter id="jd-bleed-arrow" x="-20%" y="-110%" width="140%" height="320%"
+      <filter id="jd-bleed-arrow" x="-35%" y="-140%" width="170%" height="380%"
               color-interpolation-filters="sRGB">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="1.1" result="b" />
-        <feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="4" seed="31" result="raw" />
-        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
-             channel would punch holes straight through the pill. -->
-        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0.33 0.33 0.33 0 0
-                                                      0    0    0    0 1" result="n" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="4" seed="31" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="5.0"
+                           xChannelSelector="R" yChannelSelector="G" result="dm" />
+        <feMorphology operator="dilate" radius="0.35" in="dm" result="d" />
+        <feGaussianBlur in="d" stdDeviation="1.0" result="b" />
         <feComposite in="b" in2="n" operator="arithmetic"
-                     k1="0.75" k2="1" k3="0" k4="-0.375" result="g" />
-        <feComponentTransfer in="g">
-          <feFuncR type="linear" slope="2.6" intercept="-0.8" />
-          <feFuncG type="linear" slope="2.6" intercept="-0.8" />
-          <feFuncB type="linear" slope="2.6" intercept="-0.8" />
-        </feComponentTransfer>
+                     k1="1.6" k2="0.44" k3="0" k4="0" result="m" />
+        <feColorMatrix in="m" type="matrix" values="0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 0 0
+                                                    0 0 0 6.0 -2.0" />
       </filter>
       </defs>
     </svg>
