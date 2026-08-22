@@ -117,7 +117,7 @@
   border-radius: 999px;
   background: var(--jd-bg, #f5f5f5);
   color: inherit;
-  font-family: 'polymath', system-ui, sans-serif;
+  font-family: 'early-sans-variable', system-ui, sans-serif;
   font-weight: 400;
   font-size: var(--label);
   line-height: 1;
@@ -190,7 +190,7 @@
 
 .jd__heading {
   margin: 0;
-  font-family: 'polymath', system-ui, sans-serif;
+  font-family: 'early-sans-variable', system-ui, sans-serif;
   font-weight: 700;
   font-size: var(--heading);
   line-height: 1.05;
@@ -199,7 +199,7 @@
 
 .jd__role {
   margin: calc(11 * var(--u)) 0 0;
-  font-family: 'polymath', system-ui, sans-serif;
+  font-family: 'early-sans-variable', system-ui, sans-serif;
   font-weight: 400;
   font-size: var(--role);
   line-height: 1.15;
@@ -396,5 +396,72 @@
 
   .jd__panel[data-entering] {
     animation: none;
+  }
+}
+
+/* ==========================================================================
+   Ink bleed
+   --------------------------------------------------------------------------
+   Hovering a pill degrades every OTHER pill by how far it sits from the
+   cursor — the further away, the more the ink spreads and breaks up. The
+   pill under the cursor stays sharp, and so does the selected one, so you
+   never lose track of what's currently open.
+
+   The ramp is discrete: filter primitives can't read custom properties, so
+   there are five baked filters and JS sets data-dist to choose between them.
+   That also keeps it cheap — a pill only re-filters when its distance
+   actually changes, not on every frame.
+
+   The whole pill is filtered, stroke and label together, so distant ones
+   dissolve as complete objects rather than becoming outlines full of fog.
+   ========================================================================== */
+
+.jd__filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.jd__pill[data-dist='1'] {
+  filter: url(#jd-bleed-1);
+}
+
+.jd__pill[data-dist='2'] {
+  filter: url(#jd-bleed-2);
+}
+
+.jd__pill[data-dist='3'] {
+  filter: url(#jd-bleed-3);
+}
+
+.jd__pill[data-dist='4'] {
+  filter: url(#jd-bleed-4);
+}
+
+/* Comes last so it beats the distance rules at equal specificity: the open
+   position is never allowed to dissolve. */
+.jd__pill[aria-selected='true'] {
+  filter: none;
+}
+
+/* Arrows carry the same treatment, and take the title with them — the arrows
+   act on the title, so they degrade together. */
+.jd__arrow:hover {
+  filter: url(#jd-bleed-arrow);
+}
+
+.jd[data-arrow-hover] .jd__heading {
+  filter: url(#jd-bleed-arrow);
+}
+
+/* A filter on an animating box is re-rasterised every frame. Nothing here
+   animates while filtered — the hovered and selected pills, the two that
+   change width, are both exempt — but this makes that explicit. */
+@media (prefers-reduced-motion: reduce) {
+  .jd__pill[data-dist],
+  .jd__arrow:hover,
+  .jd[data-arrow-hover] .jd__heading {
+    filter: none;
   }
 }

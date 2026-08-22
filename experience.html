@@ -29,6 +29,112 @@
   </head>
 
   <body>
+    <!-- ==================================================================
+         Ink-bleed filters.
+
+         Filter primitives can't read CSS custom properties, so the intensity
+         ramp is five baked levels rather than one parameterised filter. JS
+         sets data-dist on each pill and CSS picks the matching url().
+
+         Each is: turbulence -> blur the source -> multiply the two -> threshold
+         the alpha hard. That last step is what makes it stipple like ink on
+         absorbent paper instead of going softly out of focus.
+         ================================================================== -->
+    <svg class="jd__filters" aria-hidden="true" focusable="false" width="0" height="0">
+      <defs>
+      <filter id="jd-bleed-1" x="-20%" y="-110%" width="140%" height="320%"
+              color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="0.4" result="b" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.92" numOctaves="4" seed="11" result="raw" />
+        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
+             channel would punch holes straight through the pill. -->
+        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0    0    0    0 1" result="n" />
+        <feComposite in="b" in2="n" operator="arithmetic"
+                     k1="0.35" k2="1" k3="0" k4="-0.175" result="g" />
+        <feComponentTransfer in="g">
+          <feFuncR type="linear" slope="1.7" intercept="-0.35" />
+          <feFuncG type="linear" slope="1.7" intercept="-0.35" />
+          <feFuncB type="linear" slope="1.7" intercept="-0.35" />
+        </feComponentTransfer>
+      </filter>
+      <filter id="jd-bleed-2" x="-20%" y="-110%" width="140%" height="320%"
+              color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="b" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="4" seed="15" result="raw" />
+        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
+             channel would punch holes straight through the pill. -->
+        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0    0    0    0 1" result="n" />
+        <feComposite in="b" in2="n" operator="arithmetic"
+                     k1="0.62" k2="1" k3="0" k4="-0.31" result="g" />
+        <feComponentTransfer in="g">
+          <feFuncR type="linear" slope="2.3" intercept="-0.65" />
+          <feFuncG type="linear" slope="2.3" intercept="-0.65" />
+          <feFuncB type="linear" slope="2.3" intercept="-0.65" />
+        </feComponentTransfer>
+      </filter>
+      <filter id="jd-bleed-3" x="-20%" y="-110%" width="140%" height="320%"
+              color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1.3" result="b" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="4" seed="19" result="raw" />
+        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
+             channel would punch holes straight through the pill. -->
+        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0    0    0    0 1" result="n" />
+        <feComposite in="b" in2="n" operator="arithmetic"
+                     k1="0.95" k2="1" k3="0" k4="-0.475" result="g" />
+        <feComponentTransfer in="g">
+          <feFuncR type="linear" slope="3.0" intercept="-1.0" />
+          <feFuncG type="linear" slope="3.0" intercept="-1.0" />
+          <feFuncB type="linear" slope="3.0" intercept="-1.0" />
+        </feComponentTransfer>
+      </filter>
+      <filter id="jd-bleed-4" x="-20%" y="-110%" width="140%" height="320%"
+              color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="2.0" result="b" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="4" seed="23" result="raw" />
+        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
+             channel would punch holes straight through the pill. -->
+        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0    0    0    0 1" result="n" />
+        <feComposite in="b" in2="n" operator="arithmetic"
+                     k1="1.3" k2="1" k3="0" k4="-0.65" result="g" />
+        <feComponentTransfer in="g">
+          <feFuncR type="linear" slope="3.8" intercept="-1.4" />
+          <feFuncG type="linear" slope="3.8" intercept="-1.4" />
+          <feFuncB type="linear" slope="3.8" intercept="-1.4" />
+        </feComponentTransfer>
+      </filter>
+      <filter id="jd-bleed-arrow" x="-20%" y="-110%" width="140%" height="320%"
+              color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1.1" result="b" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="4" seed="31" result="raw" />
+        <!-- Flatten the turbulence to opaque grey. Left alone its own alpha
+             channel would punch holes straight through the pill. -->
+        <feColorMatrix in="raw" type="matrix" values="0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0.33 0.33 0.33 0 0
+                                                      0    0    0    0 1" result="n" />
+        <feComposite in="b" in2="n" operator="arithmetic"
+                     k1="0.75" k2="1" k3="0" k4="-0.375" result="g" />
+        <feComponentTransfer in="g">
+          <feFuncR type="linear" slope="2.6" intercept="-0.8" />
+          <feFuncG type="linear" slope="2.6" intercept="-0.8" />
+          <feFuncB type="linear" slope="2.6" intercept="-0.8" />
+        </feComponentTransfer>
+      </filter>
+      </defs>
+    </svg>
+
     <main>
       <!-- ================================================================
            Job description — a tab set.
