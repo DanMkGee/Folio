@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Experience — Daniel Gee</title>
+    <meta name="description" content="Daniel Gee — a decade across brand, art direction, UX/UI and editorial." />
+    <meta name="robots" content="noindex" />
+
+    <link rel="icon" href="/assets/logo/logo.svg" type="image/svg+xml" />
+
+    <!-- Adobe Fonts: thermal-variable, polymath, polymath-display, polymath-text -->
+    <link rel="stylesheet" href="https://use.typekit.net/myg7nbr.css" />
+
+    <link rel="stylesheet" href="/css/reset.css" />
+    <link rel="stylesheet" href="/css/job-description.css" />
+
+    <style>
+      /* Demo page shell only — not part of the component. #F5F5F5 is the
+         Figma canvas colour, kept so this matches what you've been viewing. */
+      body {
+        background: #f5f5f5;
+        padding: clamp(24px, 5vw, 72px) clamp(16px, 4vw, 56px);
+      }
+    </style>
+
+    <script src="/js/job-description.js" defer></script>
+  </head>
+
+  <body>
+    <main>
+      <!-- ================================================================
+           Job description — a tab set.
+
+           DOM order is chronological (oldest first), which is also
+           left-to-right in the cascade, so Left/Right arrow keys move
+           through time in the direction the layout implies.
+
+           --slot is the vertical step: 4 is the lowest pill, 0 the highest.
+           ================================================================ -->
+      <div class="jd-scope">
+        <section class="jd" data-jd aria-labelledby="jd-title">
+        <h1 class="visually-hidden" id="jd-title">Experience</h1>
+
+        <ul class="jd__rail" role="tablist" aria-label="Positions">
+          <li class="jd__slot" style="--slot: 4">
+            <button class="jd__pill" role="tab" id="tab-lau" aria-controls="panel-lau"
+                    aria-selected="false" tabindex="-1" type="button">LAU</button>
+          </li>
+          <li class="jd__slot" style="--slot: 3">
+            <button class="jd__pill" role="tab" id="tab-streetwize" aria-controls="panel-streetwize"
+                    aria-selected="false" tabindex="-1" type="button">Streetwize</button>
+          </li>
+          <li class="jd__slot" style="--slot: 2">
+            <button class="jd__pill" role="tab" id="tab-freelance" aria-controls="panel-freelance"
+                    aria-selected="false" tabindex="-1" type="button">Freelance</button>
+          </li>
+          <li class="jd__slot" style="--slot: 1">
+            <button class="jd__pill" role="tab" id="tab-white" aria-controls="panel-white"
+                    aria-selected="false" tabindex="-1" type="button">White Label</button>
+          </li>
+          <li class="jd__slot" style="--slot: 0">
+            <button class="jd__pill" role="tab" id="tab-ctl" aria-controls="panel-ctl"
+                    aria-selected="true" tabindex="0" type="button">CTL Comms</button>
+          </li>
+        </ul>
+
+        <div class="jd__panels">
+          <button class="jd__arrow jd__arrow--prev" type="button" data-jd-prev aria-label="Previous position">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#1D1B20" stroke-width="1.5" aria-hidden="true">
+              <path d="M10 2.5 4.5 8l5.5 5.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <button class="jd__arrow jd__arrow--next" type="button" data-jd-next aria-label="Next position">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#1D1B20" stroke-width="1.5" aria-hidden="true">
+              <path d="M6 2.5 11.5 8 6 13.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <article class="jd__panel" role="tabpanel" id="panel-lau" aria-labelledby="tab-lau" tabindex="0" hidden>
+            <h2 class="jd__heading">Leeds Arts University</h2>
+            <p class="jd__role">Graphic Design BA (Hons), First &middot; Creative In Residence</p>
+            <p class="jd__dates">Oct 2013&ndash;Mar 2017</p>
+            <div class="jd__body">
+              <p>Founded and led Goat Collective, a multidisciplinary group of nine photographers, designers, filmmakers, lettering artists and textile artists, delivering exhibitions, murals and creative collaborations.</p>
+              <p>Produced visual identities, posters, projection mapping and marketing for club nights and music events, while collaborative exhibition work gained coverage in the local Leeds press.</p>
+              <p>Selected as Creative in Residence after graduation, experimenting with photographic screen printing and collage before curating a collaborative exhibition featuring my own work alongside an open call for contributors.</p>
+            </div>
+          </article>
+
+          <article class="jd__panel" role="tabpanel" id="panel-streetwize" aria-labelledby="tab-streetwize" tabindex="0" hidden>
+            <h2 class="jd__heading">Streetwize Accessories</h2>
+            <p class="jd__role">Graphic Designer &rarr; Team Lead &rarr; Marketing Lead</p>
+            <p class="jd__dates">Aug 2018&ndash;Dec 2021</p>
+            <div class="jd__body">
+              <p>Promoted to Team Lead after nine months, later taking on wider marketing responsibilities and leading designers, photographers and videographers.</p>
+              <p>Overhauled packaging and visual systems across multiple consumer brands, working directly with international suppliers to improve quality, cost efficiency and sustainability.</p>
+              <p>Led major annual catalogues, product photography, e-commerce, Amazon brands, brochures, manuals, social media and YouTube content.</p>
+            </div>
+          </article>
+
+          <article class="jd__panel" role="tabpanel" id="panel-freelance" aria-labelledby="tab-freelance" tabindex="0" hidden>
+            <h2 class="jd__heading">Freelance</h2>
+            <p class="jd__role">Graphic Designer</p>
+            <p class="jd__dates">Jan 2022&ndash;Mar 2022</p>
+            <div class="jd__body">
+              <p>Delivered branding, packaging, e-commerce, Amazon and digital marketing work for clients across FMCG, lifestyle, health, beauty and retail.</p>
+              <p>Worked independently with businesses and agencies, managing multiple projects from brief through to final delivery.</p>
+              <p>Developed motion design skills through self-directed learning in After Effects, expanding my capabilities and understanding of motion.</p>
+            </div>
+          </article>
+
+          <article class="jd__panel" role="tabpanel" id="panel-white" aria-labelledby="tab-white" tabindex="0" hidden>
+            <h2 class="jd__heading">White Label Studio</h2>
+            <p class="jd__role">Graphic Designer &rarr; Team Lead</p>
+            <p class="jd__dates">Apr 2022&ndash;Aug 2022</p>
+            <div class="jd__body">
+              <p>Promoted to Team Lead within two months, managing a team of four designers in a fast-paced design subscription agency.</p>
+              <p>Delivered ongoing branding, digital, social and print design across a wide range of clients and industries.</p>
+              <p>Built experience managing workflow, quality and creative output while adapting quickly to strict brand guidelines and different client needs.</p>
+            </div>
+          </article>
+
+          <article class="jd__panel" role="tabpanel" id="panel-ctl" aria-labelledby="tab-ctl" tabindex="0">
+            <h2 class="jd__heading">CTL Communications</h2>
+            <p class="jd__role">Senior Graphic Designer &amp; Team Lead</p>
+            <p class="jd__dates">Aug 2022&ndash;Present</p>
+            <div class="jd__body">
+              <p>Progressed from Graphic Designer to Senior Designer and Team Lead, now leading, mentoring and managing a team of five designers.</p>
+              <p>Delivering branding, large-scale event identities, communications, microsites, and large scale print for major pharmaceutical, corporate and financial clients.</p>
+              <p>Driving the adoption of Figma and AI-assisted creative workflows, working closely with developers, improving processes, consistency and team capability.</p>
+            </div>
+          </article>
+        </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,370 @@
+/* ==========================================================================
+   job-description.css — the Experience component.
+
+   Ported from the Figma component set "Job description" (Property 1 =
+   CTL Comms | White Label | Freelance | Streetwize | Leeds Arts University).
+   Every number below was measured from the five SVG exports, not estimated.
+
+   THE CASCADE
+   -----------
+   In Figma the pills sit at hand-placed coordinates. They're actually a
+   strict system: each pill starts 40px before the previous one ends, and
+   sits 40px higher.
+
+       x[i+1] = x[i] + w[i] - 40        y[i+1] = y[i] - 40
+
+   A flex row with margin-left:-40px reproduces the horizontal rule exactly,
+   including when the active pill changes width — the siblings reflow on
+   their own. The vertical step is a translate driven by --slot.
+
+   Because exactly one pill is 688 and four are 240, the row always spans
+   688 + (4 x 240) - (4 x 40) = 1488px, whichever one is active. The design
+   is 1490 wide. That's why it never reflows raggedly.
+
+   SCALING
+   -------
+   Sizes are expressed in --u, one design pixel. Above the mobile
+   breakpoint --u is a container-query unit, so the whole component scales
+   proportionally and stays true to the artwork at any width. Below it,
+   --u becomes a real pixel and the layout switches to a scroll rail.
+   ========================================================================== */
+
+/* The container is the WRAPPER, not the component. @container rules only ever
+   apply to a container's descendants — never to the container element itself —
+   so if .jd were the container, every override below would be ignored on .jd
+   and the token block would never switch. */
+.jd-scope {
+  container-type: inline-size;
+  max-width: 1490px;
+  margin-inline: auto;
+}
+
+.jd {
+  --u: 0.0671141cqw;          /* 1 design px = 100/1490 cqw */
+
+  /* ---- Geometry, straight from the SVGs ---------------------------- */
+  --pill-h: calc(40 * var(--u));
+  --pill-w: calc(240 * var(--u));
+  --pill-w-active: calc(688 * var(--u));
+  --overlap: calc(40 * var(--u));
+  --stroke: max(1px, calc(2 * var(--u)));
+  --arrow: calc(38 * var(--u));
+  --panel-w: var(--pill-w-active);
+
+  /* ---- Type ------------------------------------------------------- */
+  --label: calc(21 * var(--u));
+  --label-track: calc(10.1 * var(--u));   /* active pill only */
+  --heading: calc(32 * var(--u));
+  --role: calc(22 * var(--u));
+  --meta: calc(19 * var(--u));
+  --body: calc(19 * var(--u));
+  --body-lh: calc(24.5 * var(--u));
+
+  --ink: #000;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 480ms;
+  --dur-fast: 240ms;
+
+  color: var(--ink);
+}
+
+/* Defined here so the component is self-contained — it must not depend on a
+   utility living in another stylesheet. */
+.jd .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- The cascade ---------------------------------------------------- */
+
+.jd__rail {
+  display: flex;
+  align-items: flex-start;
+  /* Transforms don't affect layout, so the row's height has to be stated.
+     The lowest pill is slot 4: translated 4 x 40 = 160, plus its own 40 = 200. */
+  height: calc(160 * var(--u) + var(--pill-h));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jd__slot {
+  transform: translateY(calc(var(--slot) * 40 * var(--u)));
+}
+
+.jd__slot + .jd__slot {
+  margin-left: calc(-1 * var(--overlap));
+}
+
+/* The pill itself. Square-ended capsule, hairline stroke, no fill —
+   so the overlapping ends read as one continuous cascade. */
+.jd__pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--pill-w);
+  height: var(--pill-h);
+  padding: 0 calc(20 * var(--u));
+  border: var(--stroke) solid var(--ink);
+  border-radius: 999px;
+  background: var(--jd-bg, #f5f5f5);
+  color: inherit;
+  font-family: 'polymath', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: var(--label);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: width var(--dur) var(--ease), letter-spacing var(--dur) var(--ease);
+}
+
+/* Active: the pill stretches to 688 and the label tracks out to fill it.
+   Both animate, which is what makes the expansion read as one movement
+   rather than a box growing around static text. */
+.jd__pill[aria-selected='true'] {
+  width: var(--pill-w-active);
+  letter-spacing: var(--label-track);
+  text-indent: var(--label-track);   /* re-centres: tracking adds a trailing gap */
+}
+
+.jd__pill:focus-visible {
+  outline: var(--stroke) solid var(--ink);
+  outline-offset: calc(3 * var(--u));
+}
+
+/* ---- Panel ----------------------------------------------------------- */
+
+.jd__panels {
+  position: relative;
+  margin-top: calc(48 * var(--u));
+}
+
+.jd__panel {
+  width: var(--panel-w);
+  /* Set by JS from the active pill's offset, so the panel always sits
+     directly under it. */
+  margin-left: var(--panel-x, 0px);
+  text-align: center;
+  transition: margin-left var(--dur) var(--ease);
+}
+
+.jd__panel[hidden] {
+  display: none;
+}
+
+.jd__heading {
+  margin: 0;
+  font-family: 'polymath', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: var(--heading);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.jd__role {
+  margin: calc(11 * var(--u)) 0 0;
+  font-family: 'polymath', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: var(--role);
+  line-height: 1.15;
+}
+
+/* Dates and body are Thermal, sitting at the Text end of the optical-size
+   axis — the same instance the Figma file used (Regular Text). */
+.jd__dates {
+  margin: calc(12 * var(--u)) 0 0;
+  font-family: 'thermal-variable', Georgia, serif;
+  font-variation-settings: 'wght' 400, 'opsz' 100;
+  font-size: var(--meta);
+  line-height: 1.1;
+}
+
+.jd__body {
+  margin: calc(26 * var(--u)) 0 0;
+  font-family: 'thermal-variable', Georgia, serif;
+  font-variation-settings: 'wght' 400, 'opsz' 100;
+  font-size: var(--body);
+  line-height: var(--body-lh);
+}
+
+.jd__body p {
+  margin: 0;
+}
+
+.jd__body p + p {
+  margin-top: calc(16 * var(--u));
+}
+
+/* ---- Arrows ---------------------------------------------------------- */
+/* Positioned at the two ends of the active pill's span, per the SVGs. */
+
+.jd__arrow {
+  position: absolute;
+  top: calc(24 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--arrow);
+  height: var(--arrow);
+  border: var(--stroke) solid var(--ink);
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease), left var(--dur) var(--ease),
+    opacity var(--dur-fast) linear;
+}
+
+.jd__arrow svg {
+  width: calc(16 * var(--u));
+  height: calc(16 * var(--u));
+  display: block;
+}
+
+.jd__arrow--prev {
+  left: var(--panel-x, 0px);
+}
+
+.jd__arrow--next {
+  left: calc(var(--panel-x, 0px) + var(--panel-w) - var(--arrow));
+}
+
+.jd__arrow:hover {
+  transform: scale(1.08);
+}
+
+.jd__arrow:disabled {
+  opacity: 0.25;
+  cursor: default;
+  transform: none;
+}
+
+.jd__arrow:focus-visible {
+  outline: var(--stroke) solid var(--ink);
+  outline-offset: calc(3 * var(--u));
+}
+
+/* ---- Panel swap ------------------------------------------------------ */
+/* Runs against the pill expansion rather than after it, so the two read as
+   a single gesture. Direction comes from --dir, set by JS. */
+
+.jd__panel[data-entering] {
+  animation: jd-enter var(--dur) var(--ease) both;
+}
+
+@keyframes jd-enter {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir, 1) * 24 * var(--u)));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Mobile — below 700px the cascade can't work: at five overlapping pills
+   it would be a few pixels wide each. It becomes a snap rail instead, which
+   keeps the pill as the brand device and keeps the arrows meaningful.
+   ========================================================================== */
+
+@container (max-width: 700px) {
+  .jd {
+    --u: 1px;
+    --pill-w: auto;
+    --pill-w-active: auto;
+    --heading: 26px;
+    --role: 17px;
+    --meta: 15px;
+    --body: 16px;
+    --body-lh: 25px;
+  }
+
+  .jd__rail {
+    height: auto;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 2px 0 12px;
+  }
+
+  .jd__rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .jd__slot {
+    transform: none;
+    scroll-snap-align: center;
+    flex: 0 0 auto;
+  }
+
+  .jd__slot + .jd__slot {
+    margin-left: 0;
+  }
+
+  .jd__pill {
+    width: auto;
+    padding: 0 18px;
+    font-size: 15px;
+  }
+
+  .jd__pill[aria-selected='true'] {
+    width: auto;
+    letter-spacing: 0.04em;
+    text-indent: 0.04em;
+    background: var(--ink);
+    color: var(--jd-bg, #f5f5f5);
+  }
+
+  .jd__panels {
+    margin-top: 28px;
+    padding: 0 44px;
+  }
+
+  .jd__panel {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .jd__arrow {
+    top: 4px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .jd__arrow svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .jd__arrow--prev {
+    left: 0;
+  }
+
+  .jd__arrow--next {
+    left: auto;
+    right: 0;
+  }
+}
+
+/* Movement is decoration here — the state change is the information. */
+@media (prefers-reduced-motion: reduce) {
+  .jd__pill,
+  .jd__panel,
+  .jd__arrow {
+    transition: none;
+  }
+
+  .jd__panel[data-entering] {
+    animation: none;
+  }
+}

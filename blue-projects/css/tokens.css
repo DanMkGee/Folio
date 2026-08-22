@@ -1,0 +1,179 @@
+/* ==========================================================================
+   Blue Projects — design tokens
+   Ported verbatim from the Blue Projects Design System export
+   (tokens/colors.css, typography.css, spacing.css, motifs.css).
+
+   This file is the brand contract: values here are not invented locally.
+   Anything added on top is marked SITE ADDITION with a reason.
+   Nothing in here may reference the folio's /css/tokens.css.
+   ========================================================================== */
+
+/* --- Fonts ---------------------------------------------------------------
+   Mozilla Headline / Mozilla Text ship here as their open Google Fonts
+   variable releases — the same typefaces as the Adobe Fonts brief. If the
+   licensed Adobe files turn up, drop them in assets/fonts/ and swap the src
+   below; no other file changes needed.
+   IBM Plex Mono is the system's flagged addition, for technical labels.     */
+
+@font-face {
+  font-family: 'Mozilla Headline';
+  src: url('../assets/fonts/MozillaHeadline-Variable.woff2') format('woff2-variations');
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mozilla Text';
+  src: url('../assets/fonts/MozillaText-Variable.woff2') format('woff2-variations');
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('../assets/fonts/IBMPlexMono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('../assets/fonts/IBMPlexMono-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('../assets/fonts/IBMPlexMono-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* --- Colour ----------------------------------------------------------
+     Blue carries nearly all the colour weight. Navy is text and small
+     accents only — never a large fill, never the logo.                   */
+  --bp-blue: #0659f0;
+  --bp-blue-75: #3d7cf3;
+  --bp-blue-50: #82a8f7;
+  --bp-blue-25: #c0d3fb;
+  --bp-blue-10: #e7edfd;
+  --bp-navy: #02163c;
+  --bp-navy-75: #31405f;
+  --bp-navy-50: #5f6b82;
+  --bp-navy-25: #adb4c1;
+  --bp-white: #ffffff;
+
+  --fg-primary: var(--bp-navy);
+  --fg-secondary: var(--bp-navy-75);
+  --fg-muted: var(--bp-navy-50);
+  --fg-on-dark: var(--bp-white);
+  --fg-on-blue: var(--bp-white);
+  --fg-link: var(--bp-blue);
+  --fg-link-hover: var(--bp-navy);
+
+  --surface-page: var(--bp-white);
+  --surface-sunken: #f4f7fd;
+  --surface-dark: var(--bp-navy);
+  --surface-blue: var(--bp-blue);
+
+  --border-subtle: #dbe4f5;
+  --border-strong: var(--bp-navy-25);
+  --border-on-dark: rgba(255, 255, 255, 0.18);
+
+  /* --- Type ------------------------------------------------------------ */
+  --font-display: 'Mozilla Headline', Arial, sans-serif;
+  --font-body: 'Mozilla Text', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --text-eyebrow: 600 12px/1.4 var(--font-body);
+  --text-display-xl: 600 76px/1.02 var(--font-display);
+  --text-display-lg: 600 56px/1.05 var(--font-display);
+  --text-display-md: 600 40px/1.1 var(--font-display);
+  --text-display-sm: 500 28px/1.2 var(--font-display);
+  --text-heading: 500 22px/1.3 var(--font-display);
+  --text-body-lg: 400 19px/1.55 var(--font-body);
+  --text-body: 400 16px/1.6 var(--font-body);
+  --text-body-sm: 400 14px/1.5 var(--font-body);
+  --text-stat: 600 48px/1 var(--font-display);
+  --tracking-eyebrow: 0.14em;
+
+  /* --- Space, shape, motion -------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  --container-max: 1280px;
+  --cut-angle: 16deg;
+
+  /* The system sets both shadow tokens to `none` on purpose: no shadows,
+     no gradients, anywhere. Hairline strokes are the only structure.      */
+  --shadow-card: none;
+  --shadow-dark: none;
+
+  --stroke-blue: 1px solid var(--bp-blue);
+  --stroke-white: 1px solid #fff;
+
+  --ease-blueprint: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-mid: 320ms;
+  --duration-slow: 700ms;
+
+  --motif-grid-size: 32px;
+
+  /* --- SITE ADDITIONS ---------------------------------------------------
+     Page-level values the export doesn't carry, kept here so nothing in
+     main.css hardcodes a magic number.                                    */
+
+  /* Button tracking is fixed brand-wide at .12em (readme: "Buttons"). */
+  --tracking-button: 0.12em;
+  /* Tag/label mono tracking, matching Tag.jsx and Badge.jsx. */
+  --tracking-mono: 0.08em;
+  /* Hover lift distance. One value so every liftable surface agrees. */
+  --lift: 3px;
+  /* Gutter for the page container at each breakpoint. */
+  --gutter: var(--space-7);
+  /* Height of the fixed nav, needed for scroll-margin and hero offset. */
+  --nav-h: 76px;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --gutter: var(--space-5);
+    --nav-h: 66px;
+    --text-display-xl: 600 46px/1.05 var(--font-display);
+    --text-display-lg: 600 38px/1.08 var(--font-display);
+    --text-display-md: 600 30px/1.15 var(--font-display);
+    --text-display-sm: 500 24px/1.25 var(--font-display);
+    --text-stat: 600 40px/1 var(--font-display);
+    --text-body-lg: 400 17px/1.55 var(--font-body);
+  }
+}
+
+/* Fluid display sizing between the two anchors above, so headlines don't
+   snap at the breakpoint. */
+@media (min-width: 901px) and (max-width: 1180px) {
+  :root {
+    --text-display-xl: 600 clamp(46px, 6.4vw, 76px)/1.03 var(--font-display);
+    --text-display-lg: 600 clamp(38px, 4.8vw, 56px)/1.06 var(--font-display);
+  }
+}
+
+/* --- Motifs ---------------------------------------------------------------
+   Angular cut corners are the brand's geometry. Straight from motifs.css. */
+.bp-cut-tl { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 22%, 14% 0); }
+.bp-cut-br { clip-path: polygon(0 0, 100% 0, 100% 78%, 86% 100%, 0 100%); }
+.bp-cut-notch { clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 0 100%); }

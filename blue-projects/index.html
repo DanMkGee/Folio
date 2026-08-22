@@ -1,27 +1,636 @@
 <!doctype html>
-<!--
-  Holding page so /blue-projects resolves. Deliberately unstyled — no design
-  decisions here, and nothing linked from the folio's stylesheets, since Blue
-  Projects is a separate brand.
-
-  Replace wholesale once the brand lands.
--->
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Blue Projects</title>
-    <meta name="description" content="Blue Projects — example site. In progress." />
-
-    <!-- Nothing to index until there's real content. -->
+    <title>Blue Projects — Engineering, EPCM and project management</title>
+    <meta
+      name="description"
+      content="Blue Projects designs, manages and executes capital projects worldwide — engineering, EPCM and industrial architecture from concept through commissioning."
+    />
     <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0659f0" />
+
+    <link rel="icon" href="assets/brand/blue-projects-motif.svg" type="image/svg+xml" />
+
+    <!-- Preload the two faces that paint above the fold. -->
+    <link rel="preload" href="assets/fonts/MozillaHeadline-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/MozillaText-Variable.woff2" as="font" type="font/woff2" crossorigin />
+
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- Marks the page as scripted before first paint, so scroll reveals only
+         start hidden when there's something around to un-hide them. -->
+    <script>
+      document.documentElement.className += ' js';
+    </script>
   </head>
 
   <body>
-    <main>
-      <h1>Blue Projects</h1>
-      <p>Example site in progress.</p>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- ====================================================================
+         Navigation
+         ==================================================================== -->
+    <header class="nav" id="nav" data-nav>
+      <div class="nav__inner">
+        <a class="nav__brand" href="#top" aria-label="Blue Projects — home">
+          <img src="assets/brand/blue-projects-logo-blue.svg" alt="Blue Projects" width="168" height="22" />
+        </a>
+
+        <nav class="nav__links" id="nav-links" aria-label="Primary">
+          <a class="nav__link" href="#services" data-navlink="services">Services</a>
+          <a class="nav__link" href="#projects" data-navlink="projects">Projects</a>
+          <a class="nav__link" href="#about" data-navlink="about">About</a>
+          <a class="btn btn--primary nav__cta" href="#consultation">Book Consultation</a>
+        </nav>
+
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-nav-toggle>
+          <span class="nav__toggle-bars" aria-hidden="true"><i></i><i></i></span>
+          <span class="sr-only">Menu</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Everything that scrolls. js/main.js translates this wrapper — and only
+         this wrapper — for the elastic overscroll bounce, so the fixed nav
+         above it stays put. -->
+    <div class="page" data-page>
+      <main id="main">
+      <!-- ==================================================================
+           A. Hero + executive consultation
+           ================================================================== -->
+      <section class="hero" id="top">
+        <div class="container hero__grid">
+          <div class="hero__copy">
+            <p class="eyebrow eyebrow--on-blue">Engineering · EPCM · Project management</p>
+
+            <h1 class="hero__title">Engineering Complex Vision into Global Reality</h1>
+
+            <p class="hero__sub">
+              We design, manage, and execute capital projects worldwide with zero-compromise precision.
+            </p>
+
+            <div class="hero__actions">
+              <a class="btn btn--on-blue" href="#projects">View our projects</a>
+              <a class="btn btn--ghost-on-blue" href="#services">Explore services</a>
+            </div>
+          </div>
+
+          <!-- Consultation feature box -------------------------------------
+               Three steps: details, slot, schedule. The slot picker stays
+               collapsed to one field until it's opened, which is what keeps
+               the card short. The CTA unlocks once name, email, date and time
+               are all in. -->
+          <aside class="consult" id="consultation" aria-labelledby="consult-title">
+            <div class="consult__head">
+              <p class="eyebrow">Book an Executive Consultation</p>
+              <h2 class="consult__title" id="consult-title">Thirty minutes with a project director</h2>
+              <p class="consult__copy">
+                Discuss project feasibility, timeline estimates, or EPCM strategies directly with our project
+                directors.
+              </p>
+            </div>
+
+            <form class="consult__form" data-consult-form novalidate>
+              <noscript>
+                <p class="consult__noscript">
+                  Enable JavaScript to pick a slot, or email
+                  <a href="mailto:consult@blueprojects.example">consult@blueprojects.example</a>.
+                </p>
+              </noscript>
+
+              <ol class="consult__steps">
+                <!-- Step 01 — who's calling -->
+                <li class="consult__step" data-step="1">
+                  <span class="consult__label"><span class="consult__num">01</span> Your details</span>
+                  <div class="fields">
+                    <div class="field">
+                      <label class="sr-only" for="consult-name">Full name</label>
+                      <input
+                        class="field__control"
+                        id="consult-name"
+                        name="name"
+                        type="text"
+                        placeholder="Full name"
+                        autocomplete="name"
+                        required
+                        data-consult-name
+                      />
+                    </div>
+                    <div class="field">
+                      <label class="sr-only" for="consult-email">Work email</label>
+                      <input
+                        class="field__control"
+                        id="consult-email"
+                        name="email"
+                        type="email"
+                        placeholder="Work email"
+                        autocomplete="email"
+                        required
+                        aria-describedby="consult-email-error"
+                        data-consult-email
+                      />
+                    </div>
+                  </div>
+                  <p class="field__error" id="consult-email-error" data-consult-email-error hidden>
+                    Enter a valid email address.
+                  </p>
+                </li>
+
+                <!-- Step 02 — the slot. Collapsed to a single field; opening it
+                     reveals the calendar and that date's times side by side, and
+                     it collapses again once a full slot is picked. -->
+                <li class="consult__step" data-step="2">
+                  <span class="consult__label" id="consult-slot-label">
+                    <span class="consult__num">02</span> Book your slot
+                  </span>
+
+                  <button
+                    class="slot"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="slot-panel"
+                    aria-labelledby="consult-slot-label slot-value"
+                    data-slot-trigger
+                  >
+                    <span class="slot__value" id="slot-value" data-slot-value>Select a date and time</span>
+                    <svg class="slot__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                      <rect x="2.5" y="4" width="15" height="13.5" rx="1" />
+                      <path d="M2.5 8h15M6.5 2.5v3M13.5 2.5v3" />
+                    </svg>
+                  </button>
+
+                  <div class="slotpanel" id="slot-panel" data-slot-panel>
+                    <div class="slotpanel__inner">
+                      <div class="slotpanel__grid">
+                        <!-- Calendar -->
+                        <div class="cal">
+                          <div class="cal__head">
+                            <button class="cal__nav" type="button" data-cal-prev aria-label="Previous month">
+                              <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+                                <path d="M7.5 1.5 3 6l4.5 4.5" />
+                              </svg>
+                            </button>
+                            <p class="cal__month" data-cal-month aria-live="polite">Month</p>
+                            <button class="cal__nav" type="button" data-cal-next aria-label="Next month">
+                              <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+                                <path d="M4.5 1.5 9 6l-4.5 4.5" />
+                              </svg>
+                            </button>
+                            <span class="cal__tz" data-cal-tz>CET</span>
+                          </div>
+
+                          <div class="cal__dows" aria-hidden="true">
+                            <span>M</span><span>T</span><span>W</span><span>T</span>
+                            <span>F</span><span>S</span><span>S</span>
+                          </div>
+
+                          <div class="cal__grid" role="group" aria-labelledby="consult-slot-label" data-cal-grid>
+                            <!-- Populated by js/main.js -->
+                          </div>
+                        </div>
+
+                        <!-- Times for the selected day -->
+                        <div class="slottimes">
+                          <p class="slottimes__title" id="consult-time-label" data-times-title>Select a date</p>
+                          <div class="times" role="radiogroup" aria-labelledby="consult-time-label" data-consult-times>
+                            <!-- Populated by js/main.js -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <p class="slotpanel__hint" data-consult-time-hint>
+                        Working days only · 30 minutes · CET
+                      </p>
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Step 03 — submit -->
+                <li class="consult__step" data-step="3">
+                  <button class="btn btn--primary btn--block" type="submit" data-consult-submit disabled>
+                    Schedule Call
+                  </button>
+                  <p class="consult__fineprint">
+                    <span class="consult__num">03</span> No obligation. A director confirms within one working day.
+                  </p>
+                </li>
+              </ol>
+            </form>
+
+            <!-- Confirmation state, swapped in on submit -->
+            <div class="consult__done" data-consult-done hidden>
+              <p class="eyebrow">Request received</p>
+              <h3 class="consult__done-title">Slot held</h3>
+              <dl class="consult__summary">
+                <div><dt>Name</dt><dd data-done-name></dd></div>
+                <div><dt>Email</dt><dd data-done-email></dd></div>
+                <div><dt>Slot</dt><dd data-done-date></dd></div>
+                <div><dt>Reference</dt><dd data-done-ref></dd></div>
+              </dl>
+              <p class="consult__copy">
+                A project director will confirm the time by email within one working day.
+              </p>
+              <button class="btn btn--ghost btn--block" type="button" data-consult-reset>Book another slot</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           C. Stats banner
+           ================================================================== -->
+      <section class="stats" aria-label="Blue Projects by the numbers">
+        <div class="container stats__grid">
+          <div class="stat" data-reveal>
+            <span class="stat__value" data-count-to="25">25</span>
+            <span class="stat__label">Offices worldwide</span>
+          </div>
+          <div class="stat" data-reveal>
+            <span class="stat__value" data-count-to="40" data-count-suffix="+">40+</span>
+            <span class="stat__label">Countries delivered</span>
+          </div>
+          <div class="stat" data-reveal>
+            <span class="stat__value" data-count-to="500" data-count-suffix="+">500+</span>
+            <span class="stat__label">Capital projects completed</span>
+          </div>
+          <div class="stat" data-reveal>
+            <span class="stat__value" data-count-to="99.4" data-count-suffix="%" data-count-decimals="1">99.4%</span>
+            <span class="stat__label">On-time commissioning</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           D. Services
+           ================================================================== -->
+      <section class="services section" id="services">
+        <div class="container">
+          <div class="section__head" data-reveal>
+            <p class="eyebrow">Our Services</p>
+            <h2 class="section__title">Everything under one roof</h2>
+            <p class="section__sub">From concept to commissioning, one team owns the outcome.</p>
+          </div>
+
+          <div class="buckets">
+            <!-- 1. Management -->
+            <article class="bucket">
+              <p class="bucket__index">01</p>
+              <h3 class="bucket__title">Management</h3>
+              <p class="bucket__kicker">EPCM &amp; PMO</p>
+              <p class="bucket__copy">
+                End-to-end project oversight, cost control, procurement, and risk mitigation.
+              </p>
+              <ul class="bucket__list">
+                <li>Construction Management</li>
+                <li>EPCM</li>
+                <li>Cost Control</li>
+                <li>Permitting &amp; EHS</li>
+              </ul>
+              <p class="bucket__meta">4 disciplines</p>
+            </article>
+
+            <!-- 2. Engineering -->
+            <article class="bucket">
+              <p class="bucket__index">02</p>
+              <h3 class="bucket__title">Engineering</h3>
+              <p class="bucket__kicker">Process, civils &amp; utilities</p>
+              <p class="bucket__copy">
+                High-performance process engineering, structural integrity, and utility optimization built for
+                industrial scale.
+              </p>
+              <ul class="bucket__list">
+                <li>Process Engineering</li>
+                <li>Civil &amp; Structural</li>
+                <li>Electrical &amp; Utilities</li>
+                <li>Automation</li>
+              </ul>
+              <p class="bucket__meta">4 disciplines</p>
+            </article>
+
+            <!-- 3. Design & Architecture -->
+            <article class="bucket">
+              <p class="bucket__index">03</p>
+              <h3 class="bucket__title">Design &amp; Architecture</h3>
+              <p class="bucket__kicker">Industrial &amp; master planning</p>
+              <p class="bucket__copy">
+                Modern, sustainable industrial design focused on spatial efficiency and future-proof facility
+                expansion.
+              </p>
+              <ul class="bucket__list">
+                <li>Concept Design</li>
+                <li>BIM / 3D Modeling</li>
+                <li>Master Planning</li>
+                <li>Sustainable Architecture</li>
+              </ul>
+              <p class="bucket__meta">4 disciplines</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           E. Featured projects — pinned horizontal track
+           ================================================================== -->
+      <section class="pin" id="projects" data-pin>
+        <div class="pin__stage">
+          <div class="container pin__head">
+            <div>
+              <p class="eyebrow">Featured Projects</p>
+              <h2 class="pin__title">Delivered worldwide</h2>
+            </div>
+            <div class="pin__progress" aria-hidden="true">
+              <span class="pin__count"><b data-pin-index>01</b> / <span data-pin-total>08</span></span>
+              <span class="pin__bar"><i data-pin-bar></i></span>
+              <span class="pin__scrollcue">Scroll</span>
+            </div>
+          </div>
+
+          <div class="pin__viewport" data-pin-viewport>
+            <div class="pin__track" data-pin-track>
+              <article class="project">
+                <div class="project__frame">
+                  <div class="project__image" role="img" aria-label="Beverage bottling hall, Munich">
+                    <span class="project__placeholder">[ project photography ]</span>
+                    <span class="project__coord">50.1109° N · 11.5820° E</span>
+                  </div>
+                </div>
+                <div class="project__body">
+                  <p class="project__meta"><span class="project__sector">Food &amp; Beverage</span> · Munich, Germany</p>
+                  <h3 class="project__title">Next-Gen Beverage Bottling Facility</h3>
+                  <p class="project__copy">
+                    Greenfield high-speed bottling hall delivered under full EPCM, from process layout to
+                    commissioning and start-up.
+                  </p>
+                  <a class="btn btn--ghost" href="#projects">View Project</a>
+                </div>
+              </article>
+
+              <article class="project">
+                <div class="project__frame">
+                  <div class="project__image" role="img" aria-label="Bio-pharma production laboratory, Basel">
+                    <span class="project__placeholder">[ project photography ]</span>
+                    <span class="project__coord">47.5596° N · 7.5886° E</span>
+                  </div>
+                </div>
+                <div class="project__body">
+                  <p class="project__meta"><span class="project__sector">Pharma</span> · Basel, Switzerland</p>
+                  <h3 class="project__title">Automated Bio-Pharma Production Lab</h3>
+                  <p class="project__copy">
+                    GMP-classified production suites with automated material flow, qualified and handed over
+                    inside a live campus.
+                  </p>
+                  <a class="btn btn--ghost" href="#projects">View Project</a>
+                </div>
+              </article>
+
+              <article class="project">
+                <div class="project__frame">
+                  <div class="project__image" role="img" aria-label="EV battery gigafactory, Katowice">
+                    <span class="project__placeholder">[ project photography ]</span>
+                    <span class="project__coord">50.2649° N · 19.0238° E</span>
+                  </div>
+                </div>
+                <div class="project__body">
+                  <p class="project__meta"><span class="project__sector">Automotive</span> · Katowice, Poland</p>
+                  <h3 class="project__title">EV Battery Gigafactory Phase II</h3>
+                  <p class="project__copy">
+                    Phase II cell-assembly expansion on a brownfield site, engineered around uninterrupted
+                    production next door.
+                  </p>
+                  <a class="btn btn--ghost" href="#projects">View Project</a>
+                </div>
+              </article>
+
+              <article class="project">
+                <div class="project__frame">
+                  <div class="project__image" role="img" aria-label="Cold-chain distribution hub, Manchester">
+                    <span class="project__placeholder">[ project photography ]</span>
+                    <span class="project__coord">53.4808° N · 2.2426° W</span>
+                  </div>
+                </div>
+                <div class="project__body">
+                  <p class="project__meta"><span class="project__sector">Logistics</span> · Manchester, UK</p>
+                  <h3 class="project__title">High-Velocity Cold-Chain Hub</h3>
+                  <p class="project__copy">
+                    Temperature-controlled high-bay distribution centre with automated retrieval and full
+                    utilities design.
+                  </p>
+                  <a class="btn btn--ghost" href="#projects">View Project</a>
+                </div>
+              </article>
+
+              <article class="project">
+                <div class="project__frame">
+                  <div class="project__image" role="img" aria-label="Confectionery production hall, Ghent">
+                    <span class="project__placeholder">[ project photography ]</span>
+                    <span class="project__coord">51.0543° N · 3.7174° E</span>
+                  </div>
+                </div>
+                <div class="project__body">
+                  <p class="project__meta"><span class="project__sector">Food &amp; Beverage</span> · Ghent, Belgium</p>
+                  <h3 class="project__title">Confectionery Line Expansion</h3>
+                  <p class="project__copy">
+                    Placeholder copy. Second production line added inside a running plant, with utilities rerouted over
+                    three shutdown windows.
+                  </p>
+                  <a class="btn btn--ghost" href="#projects">View Project</a>
+                </div>
+              </article>
+
+              <article class="project">
+                <div class="project__frame">
+                  <div class="project__image" role="img" aria-label="Sterile fill-finish suite, Dublin">
+                    <span class="project__placeholder">[ project photography ]</span>
+                    <span class="project__coord">53.3498° N · 6.2603° W</span>
+                  </div>
+                </div>
+                <div class="project__body">
+                  <p class="project__meta"><span class="project__sector">Pharma</span> · Dublin, Ireland</p>
+                  <h3 class="project__title">Sterile Fill-Finish Suite</h3>
+                  <p class="project__copy">
+                    Placeholder copy. Cleanroom cascade and isolator installation delivered to a fixed qualification
+                    deadline.
+                  </p>
+                  <a class="btn btn--ghost" href="#projects">View Project</a>
+                </div>
+              </article>
+
+              <article class="project">
+                <div class="project__frame">
+                  <div class="project__image" role="img" aria-label="Press shop extension, Valencia">
+                    <span class="project__placeholder">[ project photography ]</span>
+                    <span class="project__coord">39.4699° N · 0.3763° W</span>
+                  </div>
+                </div>
+                <div class="project__body">
+                  <p class="project__meta"><span class="project__sector">Automotive</span> · Valencia, Spain</p>
+                  <h3 class="project__title">Press Shop Extension</h3>
+                  <p class="project__copy">
+                    Placeholder copy. Heavy-foundation press bay with reinforced pits, sequenced around live body-shop
+                    operations.
+                  </p>
+                  <a class="btn btn--ghost" href="#projects">View Project</a>
+                </div>
+              </article>
+
+              <article class="project">
+                <div class="project__frame">
+                  <div class="project__image" role="img" aria-label="Automated parcel hub, Rotterdam">
+                    <span class="project__placeholder">[ project photography ]</span>
+                    <span class="project__coord">51.9244° N · 4.4777° E</span>
+                  </div>
+                </div>
+                <div class="project__body">
+                  <p class="project__meta"><span class="project__sector">Logistics</span> · Rotterdam, Netherlands</p>
+                  <h3 class="project__title">Automated Parcel Sortation Hub</h3>
+                  <p class="project__copy">
+                    Placeholder copy. Cross-dock terminal with automated sortation, dock levellers and full site
+                    infrastructure.
+                  </p>
+                  <a class="btn btn--ghost" href="#projects">View Project</a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           F. About & sustainability
+           ================================================================== -->
+      <section class="about section" id="about">
+        <div class="container about__grid">
+          <div class="about__left" data-reveal>
+            <p class="eyebrow">About Blue Projects</p>
+            <h2 class="section__title">Local Expertise, Global Footprint</h2>
+            <p class="about__lead">
+              We bridge complex engineering standards across borders, delivering turnkey facilities that minimize
+              environmental footprint while maximizing operational yield.
+            </p>
+            <p class="about__body">
+              Headquartered in Belgium and resourced from 25 offices, our directors work in the jurisdiction the
+              project is built in — same permitting authority, same contractors, same language. Disciplines sit
+              under one roof, so scope does not change hands between concept, detailed design and commissioning.
+            </p>
+            <dl class="about__facts">
+              <div><dt>Founded</dt><dd>Belgium</dd></div>
+              <div><dt>Delivery model</dt><dd>EPCM, PMO, turnkey</dd></div>
+              <div><dt>Site record</dt><dd>3,000,000 hours, no LTI</dd></div>
+            </dl>
+            <a class="btn btn--ghost" href="#cta">Get in touch</a>
+          </div>
+
+          <div class="about__right" data-reveal>
+            <p class="eyebrow">Sustainability</p>
+            <h3 class="about__right-title">Built to run on less</h3>
+            <ul class="commitments">
+              <li class="commitment">
+                <span class="commitment__value">−38%</span>
+                <span class="commitment__label">Utilities load</span>
+                <p class="commitment__copy">
+                  Heat recovery and utility optimization modelled at concept stage, not retrofitted after handover.
+                </p>
+              </li>
+              <li class="commitment">
+                <span class="commitment__value">BREEAM</span>
+                <span class="commitment__label">Excellent, as standard</span>
+                <p class="commitment__copy">
+                  Certification targets fixed in the design brief, with the evidence trail managed by the same
+                  project team.
+                </p>
+              </li>
+              <li class="commitment">
+                <span class="commitment__value">2030</span>
+                <span class="commitment__label">Client net-zero pathways</span>
+                <p class="commitment__copy">
+                  Facilities engineered for electrification and future expansion, so today's plant is not tomorrow's
+                  stranded asset.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           G. Closing CTA
+           ================================================================== -->
+      <section class="cta" id="cta">
+        <div class="container cta__inner">
+          <h2 class="cta__title">Let's build what's next.</h2>
+          <p class="cta__sub">
+            Bring us a feasibility question, a site, or a programme already under way. Innovative project solutions
+            for a brighter tomorrow.
+          </p>
+          <div class="cta__actions">
+            <a class="btn btn--on-blue" href="#consultation">Book Consultation</a>
+            <a class="btn btn--ghost-on-blue" href="mailto:hello@blueprojects.example">Get in Touch</a>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <!-- ====================================================================
+         Footer
+         ==================================================================== -->
+    <footer class="footer">
+      <div class="container footer__grid">
+        <div class="footer__brand">
+          <img
+            src="assets/brand/blue-projects-logo-white.svg"
+            alt="Blue Projects"
+            width="168"
+            height="22"
+          />
+          <p class="footer__tagline">Innovative project solutions for a brighter tomorrow.</p>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__title">Services</p>
+          <ul>
+            <li><a href="#services">Project Management</a></li>
+            <li><a href="#services">EPCM</a></li>
+            <li><a href="#services">Engineering</a></li>
+            <li><a href="#services">Design &amp; Architecture</a></li>
+            <li><a href="#services">Permitting &amp; EHS</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__title">Company</p>
+          <ul>
+            <li><a href="#about">About us</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">Sustainability</a></li>
+            <li><a href="#cta">Careers</a></li>
+            <li><a href="#consultation">Book a consultation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col footer__col--wide">
+          <p class="footer__title">Office network</p>
+          <ul class="footer__offices">
+            <li><span>Europe</span> Brussels · Antwerp · Munich · Warsaw · Bucharest · Milan · Manchester</li>
+            <li><span>Americas</span> Chicago · Monterrey · São Paulo</li>
+            <li><span>Asia-Pacific</span> Singapore · Ho Chi Minh City · Shanghai</li>
+            <li><span>MEA</span> Dubai · Cairo · Casablanca</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="container footer__base">
+        <p>© <span data-year>2026</span> Blue Projects. All rights reserved.</p>
+        <p>25 offices · 40+ countries</p>
+      </div>
+    </footer>
+
+    </div>
+    <!-- /.page -->
+
+    <script src="js/main.js" defer></script>
   </body>
 </html>
