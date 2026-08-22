@@ -23,7 +23,6 @@
   const root = document.querySelector('[data-jd]');
   if (!root) return;
 
-  const rail = root.querySelector('[role="tablist"]');
   const tabs = [...root.querySelectorAll('[role="tab"]')];
   const panels = [...root.querySelectorAll('[role="tabpanel"]')];
   const prev = root.querySelector('[data-jd-prev]');
@@ -116,45 +115,6 @@
 
   if (prev) prev.addEventListener('click', () => select(index - 1));
   if (next) next.addEventListener('click', () => select(index + 1));
-
-  /* ---- Ink bleed --------------------------------------------------------
-     Each pill is tagged with its distance from the one under the cursor, and
-     CSS maps that to a filter. Capped at 4, which is the whole cascade.
-     -------------------------------------------------------------------- */
-
-  function setBleed(fromIndex) {
-    tabs.forEach((tab, i) => {
-      if (fromIndex === null) {
-        tab.removeAttribute('data-dist');
-        return;
-      }
-      const distance = Math.min(4, Math.abs(i - fromIndex));
-      if (distance === 0) tab.removeAttribute('data-dist');
-      else tab.setAttribute('data-dist', String(distance));
-    });
-  }
-
-  // Delegated on the rail rather than bound per pill: mouseover bubbles, so
-  // one listener covers moving between pills, and it doesn't miss the case
-  // where the cursor crosses from one pill straight onto its neighbour.
-  rail.addEventListener('mouseover', (event) => {
-    const pill = event.target.closest('[role="tab"]');
-    if (pill) setBleed(tabs.indexOf(pill));
-  });
-
-  rail.addEventListener('mouseleave', () => setBleed(null));
-
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('focus', () => setBleed(i));
-    tab.addEventListener('blur', () => setBleed(null));
-  });
-
-  // Hovering an arrow distorts the arrow and the title together.
-  [prev, next].forEach((arrow) => {
-    if (!arrow) return;
-    arrow.addEventListener('mouseenter', () => root.setAttribute('data-arrow-hover', ''));
-    arrow.addEventListener('mouseleave', () => root.removeAttribute('data-arrow-hover'));
-  });
 
   tabs.forEach((t, n) => {
     t.tabIndex = n === index ? 0 : -1;

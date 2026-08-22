@@ -53,7 +53,8 @@
 
   /* ---- Type ------------------------------------------------------- */
   --label: calc(21 * var(--u));
-  --label-track: calc(10.1 * var(--u));   /* active pill only */
+  --label-track: calc(10.1 * var(--u));   /* active pill only — 0.48em */
+  --heading-track: 0.14em;                /* arrow hover, much gentler */
   --heading: calc(32 * var(--u));
   --role: calc(22 * var(--u));
   --meta: calc(19 * var(--u));
@@ -398,7 +399,8 @@
 @media (prefers-reduced-motion: reduce) {
   .jd__pill,
   .jd__panel,
-  .jd__arrow {
+  .jd__arrow,
+  .jd__heading {
     transition: none;
   }
 
@@ -408,68 +410,25 @@
 }
 
 /* ==========================================================================
-   Ink bleed
+   Arrow hover — the title tracks out
    --------------------------------------------------------------------------
-   Hovering a pill degrades every OTHER pill by how far it sits from the
-   cursor — the further away, the more the ink spreads and breaks up. The
-   pill under the cursor stays sharp, and so does the selected one, so you
-   never lose track of what's currently open.
+   The arrows act on the title, so hovering one reaches the title rather than
+   just lighting up the button. Same gesture as the pill expanding, dialled
+   well back: the pill spreads its label across 688px at 0.48em, this is a
+   fraction of that.
 
-   The ramp is discrete: filter primitives can't read custom properties, so
-   there are five baked filters and JS sets data-dist to choose between them.
-   That also keeps it cheap — a pill only re-filters when its distance
-   actually changes, not on every frame.
-
-   The whole pill is filtered, stroke and label together, so distant ones
-   dissolve as complete objects rather than becoming outlines full of fog.
+   In em, not --u, because it should stay proportional to the heading rather
+   than to the artwork's scale. text-indent cancels the trailing gap that
+   tracking adds, which would otherwise shove the centred line left.
    ========================================================================== */
 
-.jd__filters {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
+.jd__heading {
+  transition: letter-spacing var(--dur) var(--ease),
+    text-indent var(--dur) var(--ease);
 }
 
-.jd__pill[data-dist='1'] {
-  filter: url(#jd-bleed-1);
-}
-
-.jd__pill[data-dist='2'] {
-  filter: url(#jd-bleed-2);
-}
-
-.jd__pill[data-dist='3'] {
-  filter: url(#jd-bleed-3);
-}
-
-.jd__pill[data-dist='4'] {
-  filter: url(#jd-bleed-4);
-}
-
-/* Comes last so it beats the distance rules at equal specificity: the open
-   position is never allowed to dissolve. */
-.jd__pill[aria-selected='true'] {
-  filter: none;
-}
-
-/* Arrows carry the same treatment, and take the title with them — the arrows
-   act on the title, so they degrade together. */
-.jd__arrow:hover {
-  filter: url(#jd-bleed-arrow);
-}
-
-.jd[data-arrow-hover] .jd__heading {
-  filter: url(#jd-bleed-arrow);
-}
-
-/* A filter on an animating box is re-rasterised every frame. Nothing here
-   animates while filtered — the hovered and selected pills, the two that
-   change width, are both exempt — but this makes that explicit. */
-@media (prefers-reduced-motion: reduce) {
-  .jd__pill[data-dist],
-  .jd__arrow:hover,
-  .jd[data-arrow-hover] .jd__heading {
-    filter: none;
-  }
+.jd__panels:has(.jd__arrow:hover) .jd__heading,
+.jd__panels:has(.jd__arrow:focus-visible) .jd__heading {
+  letter-spacing: var(--heading-track);
+  text-indent: var(--heading-track);
 }
