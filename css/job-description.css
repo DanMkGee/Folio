@@ -43,7 +43,7 @@
   --u: 0.0671141cqw;          /* 1 design px = 100/1490 cqw */
 
   /* ---- Geometry, straight from the SVGs ---------------------------- */
-  --pill-h: calc(40 * var(--u));
+  --pill-h: calc(42 * var(--u));   /* 40 + the 2px stroke, which SVG centres on the edge */
   --pill-w: calc(240 * var(--u));
   --pill-w-active: calc(688 * var(--u));
   --overlap: calc(40 * var(--u));
@@ -88,7 +88,8 @@
   display: flex;
   align-items: flex-start;
   /* Transforms don't affect layout, so the row's height has to be stated.
-     The lowest pill is slot 4: translated 4 x 40 = 160, plus its own 40 = 200. */
+     The lowest pill is slot 4: translated 4 x 40 = 160, plus its own 42 = 202,
+     which is the artwork's full height. */
   height: calc(160 * var(--u) + var(--pill-h));
   margin: 0;
   padding: 0;
@@ -126,13 +127,41 @@
   transition: width var(--dur) var(--ease), letter-spacing var(--dur) var(--ease);
 }
 
-/* Active: the pill stretches to 688 and the label tracks out to fill it.
-   Both animate, which is what makes the expansion read as one movement
-   rather than a box growing around static text. */
-.jd__pill[aria-selected='true'] {
+/* Expansion is a POINTER state, not a selection state: the pill stretches to
+   688 and the label tracks out to fill it on hover or keyboard focus. Both
+   animate, which is what makes it read as one movement rather than a box
+   growing around static text. Selection is a separate thing — it changes the
+   panel, and only a click does that. */
+.jd__pill[aria-selected='true'],
+.jd__pill:hover,
+.jd__pill:focus-visible {
   width: var(--pill-w-active);
   letter-spacing: var(--label-track);
   text-indent: var(--label-track);   /* re-centres: tracking adds a trailing gap */
+}
+
+/* Exactly one pill may be wide, because the row's total width depends on it:
+   one 688 plus four 240s, less four 40px overlaps, is always 1488. Two wide
+   pills would overflow the artwork by 448px. A pointer beats the selection. */
+.jd__rail:has(.jd__pill:hover) .jd__pill[aria-selected='true']:not(:hover),
+.jd__rail:has(.jd__pill:focus-visible) .jd__pill[aria-selected='true']:not(:focus-visible) {
+  width: var(--pill-w);
+  letter-spacing: normal;
+  text-indent: 0;
+}
+
+@media (hover: none) {
+  .jd__pill:hover {
+    width: var(--pill-w);
+    letter-spacing: normal;
+    text-indent: 0;
+  }
+
+  .jd__pill[aria-selected='true'] {
+    width: var(--pill-w-active);
+    letter-spacing: var(--label-track);
+    text-indent: var(--label-track);
+  }
 }
 
 .jd__pill:focus-visible {
@@ -153,7 +182,6 @@
      directly under it. */
   margin-left: var(--panel-x, 0px);
   text-align: center;
-  transition: margin-left var(--dur) var(--ease);
 }
 
 .jd__panel[hidden] {
@@ -252,8 +280,10 @@
 }
 
 /* ---- Panel swap ------------------------------------------------------ */
-/* Runs against the pill expansion rather than after it, so the two read as
-   a single gesture. Direction comes from --dir, set by JS. */
+/* Runs against the pill expansion rather than after it, so the two read as a
+   single gesture. Deliberately NOT mirrored by direction: the rightward
+   version compounded with the panel's own repositioning and overshot. Both
+   directions now use the leftward entrance. */
 
 .jd__panel[data-entering] {
   animation: jd-enter var(--dur) var(--ease) both;
@@ -262,7 +292,7 @@
 @keyframes jd-enter {
   from {
     opacity: 0;
-    transform: translateX(calc(var(--dir, 1) * 24 * var(--u)));
+    transform: translateX(calc(-24 * var(--u)));
   }
   to {
     opacity: 1;
