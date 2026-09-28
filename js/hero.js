@@ -36,7 +36,19 @@
       },
       { rootMargin: '0px 0px -12% 0px', threshold: 0.01 }
     );
-    revealables.forEach((el) => io.observe(el));
+
+    // Anything already at or above the fold is shown outright rather than
+    // observed. An observer only fires when an element ENTERS the viewport,
+    // so on a page that loads already scrolled — browser scroll restoration
+    // on refresh, or a deep link like #cv — everything above the scroll
+    // position would never intersect and would stay at opacity 0 for good.
+    revealables.forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        el.classList.add('is-in');
+      } else {
+        io.observe(el);
+      }
+    });
   }
 
   /* ---- Scroll drift ----------------------------------------------------
