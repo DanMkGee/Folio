@@ -20,8 +20,8 @@
    The page's two colours. Everything else references these, including the
    fixed nav, which sits outside .cv-inner and so can't inherit from it.
 
-   BRANCH: inverted. Ink and paper are swapped — the whole theme is these
-   two values.
+   The site runs dark: ink is light, paper is near-black. Swapping these two
+   values is the whole theme — nothing else hardcodes a colour.
 
    Not pure #000/#fff. Full-strength white on full-strength black smears at
    these weights: the eye blooms the light areas, and Thermal's hairlines at
@@ -30,8 +30,8 @@
    ========================================================================== */
 
 :root {
-  --ink: #f2f2f2;     /* was #000 */
-  --paper: #0a0a0a;   /* was #f5f5f5 */
+  --ink: #f2f2f2;
+  --paper: #0a0a0a;
 }
 
 body {
@@ -475,7 +475,7 @@ html {
   }
 }
 
-/* ---- Inverted: selection --------------------------------------------- */
+/* ---- Selection ------------------------------------------------------- */
 
 ::selection {
   background: var(--ink);
