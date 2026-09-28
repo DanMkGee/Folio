@@ -183,7 +183,7 @@ html {
 .xp__head {
   display: flex;
   justify-content: center;
-  margin-bottom: calc(30 * var(--u));
+  margin-bottom: calc(86 * var(--u));
 }
 
 .xp__title {
@@ -376,5 +376,73 @@ html {
 
   .sitenav__item + .sitenav__item {
     margin-left: calc(-14 * var(--nav-u));
+  }
+}
+
+
+/* ==========================================================================
+   Experience intro
+   --------------------------------------------------------------------------
+   Two halves, deliberately different:
+
+   - The pills SCRUB. Each widens slightly as the section is scrolled toward,
+     staggered along the cascade, and unwinds if you scroll back. --grow is a
+     multiplier of --u so it stays in the artwork's units and scales with
+     everything else.
+
+   - The panel PLAYS ONCE. When the scrub is nearly complete the section is
+     released: CTL expands to its full 688 and the panel text arrives. That
+     half doesn't rewind, so scrolling up and down doesn't re-trigger it.
+
+   Armed state holds CTL at rest width and withholds the panel entirely —
+   approaching the section you see the cascade and nothing else.
+   ========================================================================== */
+
+.js .jd__pill {
+  width: calc(var(--pill-w) + var(--grow, 0) * var(--u));
+}
+
+/* Held back. Beats the selected and hover rules, which both want 688. */
+.js .jd--armed .jd__pill[aria-selected='true'],
+.js .jd--armed .jd__pill:hover,
+.js .jd--armed .jd__pill:focus-visible {
+  width: calc(var(--pill-w) + var(--grow, 0) * var(--u));
+  letter-spacing: normal;
+  text-indent: 0;
+}
+
+.js .jd--armed .jd__panels {
+  pointer-events: none;
+}
+
+/* Panel contents and the arrows arrive together, staggered. */
+.js .jd__panel > *,
+.js .jd__arrow {
+  transition: opacity 700ms var(--ease-out) var(--in-delay, 0ms),
+    transform 900ms var(--ease-out) var(--in-delay, 0ms);
+}
+
+.js .jd--armed .jd__panel > *,
+.js .jd--armed .jd__arrow {
+  opacity: 0;
+  transform: translateX(-8%);
+}
+
+.js .jd__panel > *:nth-child(1) { --in-delay: 240ms; }
+.js .jd__panel > *:nth-child(2) { --in-delay: 340ms; }
+.js .jd__panel > *:nth-child(3) { --in-delay: 440ms; }
+.js .jd__panel > *:nth-child(4) { --in-delay: 540ms; }
+.js .jd__arrow { --in-delay: 620ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .jd--armed .jd__panel > *,
+  .js .jd--armed .jd__arrow {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js .jd__panel > *,
+  .js .jd__arrow {
+    transition: none;
   }
 }

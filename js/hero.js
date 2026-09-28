@@ -113,4 +113,60 @@
     });
   });
 
+  /* ---- Experience intro ------------------------------------------------
+     Hybrid: the pills follow the scroll, the panel plays once.
+
+     The scrub runs from the moment the cascade enters the viewport until it
+     has risen to just under halfway up. Each pill's share is offset along
+     that range, so they widen in sequence rather than together.
+
+     At the top of the range the section is released and never re-armed —
+     CTL takes its full width and the panel arrives, once.
+     -------------------------------------------------------------------- */
+
+  const jd = document.querySelector('[data-jd]');
+  const rail = jd && jd.querySelector('[role="tablist"]');
+
+  if (jd && rail && !reduce.matches) {
+    const pills = [...jd.querySelectorAll('[role="tab"]')];
+    const GROW = 16;        // design px at full scrub — a nudge, not a build
+    const STAGGER = 0.1;    // each pill starts this much later in the range
+    const RELEASE = 0.92;
+
+    let armed = true;
+    let ticking = false;
+    jd.classList.add('jd--armed');
+
+    function apply() {
+      ticking = false;
+      const top = rail.getBoundingClientRect().top;
+      const span = window.innerHeight * 0.55;
+      const p = Math.min(1, Math.max(0, (window.innerHeight - top) / span));
+
+      if (armed) {
+        pills.forEach((pill, i) => {
+          const local = Math.min(1, Math.max(0, (p - i * STAGGER) / 0.45));
+          pill.style.setProperty('--grow', (local * GROW).toFixed(2));
+        });
+
+        if (p >= RELEASE) {
+          armed = false;
+          jd.classList.remove('jd--armed');
+          // Let the pills settle back to their exact resting widths, so the
+          // cascade lands on the artwork's 1488 rather than a nudged version.
+          pills.forEach((pill) => pill.style.setProperty('--grow', '0'));
+        }
+      }
+    }
+
+    function onScroll() {
+      if (ticking || !armed) return;
+      ticking = true;
+      requestAnimationFrame(apply);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    apply();
+  }
 })();
