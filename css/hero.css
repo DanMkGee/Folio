@@ -64,7 +64,7 @@ html {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-block: calc(120 * var(--u)) calc(150 * var(--u));
+  padding-block: calc(120 * var(--u)) calc(90 * var(--u));
 }
 
 /* Common to every hero line: Thermal, Display optical size, tight leading. */
@@ -177,7 +177,7 @@ html {
      from its own container, so narrowing this scales the cascade down with
      it rather than pushing it off the edge. */
   padding-inline: 60px;
-  padding-block: calc(80 * var(--u)) calc(90 * var(--u));
+  padding-block: calc(40 * var(--u)) calc(90 * var(--u));
 }
 
 .xp__head {
@@ -189,14 +189,15 @@ html {
 .xp__title {
   flex: 0 0 auto;
   margin: 0;
-  /* Matches the "…and you know… dreaming." line exactly: Thin Display at the
-     hero's size, title case. The old measured size, weight and the -0.084em
-     tracking all belonged to the uppercase lockup with the rule, which is
-     gone. */
+  /* Same treatment as the hero's DANIEL GEE: small, Light Display, tracked
+     wide open and set in caps. text-indent cancels the trailing gap the
+     tracking adds, so it stays optically centred. */
   font-family: 'thermal-variable', Georgia, serif;
-  font-size: calc(112 * var(--u));
-  font-variation-settings: 'wght' 100, 'opsz' 900;
-  letter-spacing: -0.02em;
+  font-size: calc(47 * var(--u));
+  font-variation-settings: 'wght' 300, 'opsz' 900;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  text-transform: uppercase;
   line-height: 1.06;
   color: var(--ink);
 }
