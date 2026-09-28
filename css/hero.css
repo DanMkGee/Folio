@@ -19,11 +19,24 @@
 /* ==========================================================================
    The page's two colours. Everything else references these, including the
    fixed nav, which sits outside .cv-inner and so can't inherit from it.
+
+   BRANCH: inverted. Ink and paper are swapped — the whole theme is these
+   two values.
+
+   Not pure #000/#fff. Full-strength white on full-strength black smears at
+   these weights: the eye blooms the light areas, and Thermal's hairlines at
+   opsz 900 are exactly where that shows. Pulling both ends in slightly keeps
+   the contrast enormous while letting the thin strokes hold their shape.
    ========================================================================== */
 
 :root {
-  --ink: #000;
-  --paper: #f5f5f5;
+  --ink: #f2f2f2;     /* was #000 */
+  --paper: #0a0a0a;   /* was #f5f5f5 */
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
 }
 
 html {
@@ -143,7 +156,11 @@ html {
    baseline individually — each drawing has its own optical centre and they
    don't share a common one. -------------------------------------------- */
 
+/* The supplied SVGs are solid black on transparent. invert() flips the
+   channels and leaves alpha untouched, so the drawings come out white
+   without needing a second set of files. */
 .hero__icon {
+  filter: invert(1);
   display: inline-block;
   width: auto;
   vertical-align: baseline;
@@ -456,4 +473,11 @@ html {
   .js .jd__arrow {
     transition: none;
   }
+}
+
+/* ---- Inverted: selection --------------------------------------------- */
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
 }
