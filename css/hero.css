@@ -398,6 +398,17 @@ html {
    approaching the section you see the cascade and nothing else.
    ========================================================================== */
 
+/* Centred throughout. The cascade's growth all happens at its right-hand
+   end — CTL is the last pill — so centring is what turns that growth into a
+   leftward push on everything before it.
+
+   It also lands correctly: released, the row is 1488 against a 1490 container,
+   so centring leaves the first pill at x1, which is exactly where the artwork
+   puts it. Nothing about the resting layout changes. */
+.js .jd__rail {
+  justify-content: center;
+}
+
 .js .jd__pill {
   width: calc(var(--pill-w) + var(--grow, 0) * var(--u));
 }
