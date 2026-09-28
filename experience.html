@@ -21,7 +21,7 @@
       /* Demo page shell only — not part of the component. #F5F5F5 is the
          Figma canvas colour, kept so this matches what you've been viewing. */
       body {
-        background: #f5f5f5;
+        background: var(--paper);
         padding: clamp(24px, 5vw, 72px) clamp(16px, 4vw, 56px);
       }
     </style>
@@ -129,13 +129,13 @@
 
         <div class="jd__panels">
           <button class="jd__arrow jd__arrow--prev" type="button" data-jd-prev aria-label="Previous position">
-            <svg viewBox="0 0 16 16" fill="none" stroke="#1D1B20" stroke-width="1.5" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
               <path d="M10 2.5 4.5 8l5.5 5.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </button>
 
           <button class="jd__arrow jd__arrow--next" type="button" data-jd-next aria-label="Next position">
-            <svg viewBox="0 0 16 16" fill="none" stroke="#1D1B20" stroke-width="1.5" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
               <path d="M6 2.5 11.5 8 6 13.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </button>
