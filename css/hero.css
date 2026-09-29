@@ -32,6 +32,7 @@
 :root {
   --ink: #f2f2f2;
   --paper: #0a0a0a;
+  --paper-rgb: 10 10 10;   /* same colour, for alpha variants */
 }
 
 body {
@@ -480,4 +481,35 @@ html {
 ::selection {
   background: var(--ink);
   color: var(--paper);
+}
+
+
+/* ==========================================================================
+   Top fade
+   --------------------------------------------------------------------------
+   Sits behind the fixed nav and dissolves whatever scrolls up into it. Built
+   from --paper rather than literal black so it stays the page's own colour
+   if the theme changes; the fade is to a zero-alpha version of that same
+   colour, not to `transparent`, which would pass through grey on the way.
+
+   The extra stop at 45% holds the solid end longer than a straight linear
+   ramp would — a pure linear alpha fade reads as though it stops abruptly.
+
+   z-index sits between the page (auto) and the nav (40), so content passes
+   under the fade while the links stay legible on top. pointer-events: none
+   means it's invisible to the cursor entirely.
+   ========================================================================== */
+
+.top-fade {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: clamp(104px, 13vh, 172px);
+  z-index: 30;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(var(--paper-rgb) / 1) 0%,
+    rgb(var(--paper-rgb) / 0.92) 45%,
+    rgb(var(--paper-rgb) / 0) 100%
+  );
 }
