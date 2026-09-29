@@ -114,14 +114,18 @@
   });
 
   /* ---- Experience intro ------------------------------------------------
-     Hybrid: the pills follow the scroll, the panel plays once.
+     Fully reversible. The scrub runs from the moment the cascade enters the
+     viewport until it has risen to just under halfway up; each pill's share
+     is offset along that range so they widen in sequence rather than
+     together. At the top of the range the section releases — CTL takes its
+     full width and the panel arrives — and scrolling back up puts all of it
+     away again, as many times as you like.
 
-     The scrub runs from the moment the cascade enters the viewport until it
-     has risen to just under halfway up. Each pill's share is offset along
-     that range, so they widen in sequence rather than together.
-
-     At the top of the range the section is released and never re-armed —
-     CTL takes its full width and the panel arrives, once.
+     Release and re-arm are at different points on purpose. A single
+     threshold sits exactly where the scroll is most likely to come to rest,
+     so the tiniest movement would flip the state back and forth and the
+     panel would strobe. The gap between them means you have to genuinely
+     travel back before it re-arms.
      -------------------------------------------------------------------- */
 
   const jd = document.querySelector('[data-jd]');
@@ -131,7 +135,8 @@
     const pills = [...jd.querySelectorAll('[role="tab"]')];
     const GROW = 16;        // design px at full scrub — a nudge, not a build
     const STAGGER = 0.1;    // each pill starts this much later in the range
-    const RELEASE = 0.92;
+    const RELEASE = 0.92;   // opens on the way down
+    const REARM = 0.78;     // closes on the way back up
 
     let armed = true;
     let ticking = false;
@@ -143,25 +148,29 @@
       const span = window.innerHeight * 0.55;
       const p = Math.min(1, Math.max(0, (window.innerHeight - top) / span));
 
+      if (armed && p >= RELEASE) {
+        armed = false;
+        jd.classList.remove('jd--armed');
+      } else if (!armed && p <= REARM) {
+        armed = true;
+        jd.classList.add('jd--armed');
+      }
+
       if (armed) {
         pills.forEach((pill, i) => {
           const local = Math.min(1, Math.max(0, (p - i * STAGGER) / 0.45));
           pill.style.setProperty('--grow', (local * GROW).toFixed(2));
         });
-
-        if (p >= RELEASE) {
-          armed = false;
-          jd.classList.remove('jd--armed');
-          // Let the pills settle back to their exact resting widths, so the
-          // cascade lands on the artwork's 1488 rather than a nudged version.
-          pills.forEach((pill) => pill.style.setProperty('--grow', '0'));
-        }
+      } else {
+        // Released: drop the nudge so the cascade lands on the artwork's
+        // exact 1488 rather than a slightly widened version of it.
+        pills.forEach((pill) => pill.style.setProperty('--grow', '0'));
       }
     }
 
     function onScroll() {
-      if (ticking || !armed) return;
-      ticking = true;
+      if (ticking) return;      // no longer stops once released — it has to
+      ticking = true;           // keep tracking to be able to re-arm
       requestAnimationFrame(apply);
     }
 

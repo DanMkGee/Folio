@@ -403,14 +403,13 @@ html {
    --------------------------------------------------------------------------
    Two halves, deliberately different:
 
-   - The pills SCRUB. Each widens slightly as the section is scrolled toward,
-     staggered along the cascade, and unwinds if you scroll back. --grow is a
-     multiplier of --u so it stays in the artwork's units and scales with
-     everything else.
+   Reversible throughout. The pills widen as the section is scrolled toward,
+   staggered along the cascade; at the top of that range CTL expands to its
+   full 688 and the panel text arrives. Scrolling back up puts all of it away
+   again, and it can run as many times as you like.
 
-   - The panel PLAYS ONCE. When the scrub is nearly complete the section is
-     released: CTL expands to its full 688 and the panel text arrives. That
-     half doesn't rewind, so scrolling up and down doesn't re-trigger it.
+   --grow is a multiplier of --u, so the nudge stays in the artwork's units
+   and scales with everything else.
 
    Armed state holds CTL at rest width and withholds the panel entirely —
    approaching the section you see the cascade and nothing else.
